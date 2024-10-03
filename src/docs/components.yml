@@ -1,0 +1,312 @@
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        _id:
+          type: string
+        givenName:
+          type: string
+        familyName:
+          type: string
+        email:
+          type: string
+          format: email
+        deleted:
+          type: boolean
+        bio:
+          type: String
+        gender:
+          type: String
+          enum: [Female, Male]
+        profileImg:
+          type: String
+        isEmailVerified:
+          type: Boolean
+        savedPosts:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              storyImg:
+                type: string
+      example:
+        _id: 5ebac534954b54139806c112
+        givenName: fake
+        familyName: name
+        email: fake@example.com
+        deleted: false
+        isEmailverified: true
+        bio: bob the builder
+        gender: Male
+        profileImg: 15948asff787945616.jpeg
+        savedPstes:
+          [
+            { _id: 123123sa123123adsf, storyImg: 321asdf321asfd.jpeg },
+            { _id: 123sdfsdfa146456dfgh, storyImg: 321asdf3sdfsdfsdf.jpeg },
+          ]
+    Story:
+      type: object
+      properties:
+        _id:
+          type: string
+        postedBy:
+          type: object
+          properties:
+            _id:
+              type: string
+            profileImg:
+              type: string
+            givenName:
+              type: string
+            familyName:
+              type: string
+        likedBy:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              profileImg:
+                type: string
+              givenName:
+                type: string
+              familyName:
+                type: string
+        comments:
+          type: array
+          items:
+            type: object
+            properties:
+              _id:
+                type: string
+              comment:
+                type: string
+              commetnedBy:
+                type: object
+                properties:
+                  _id:
+                    type: string
+                  profileImg:
+                    type: string
+                  givenName:
+                    type: string
+                  familyName:
+                    type: string
+                  comment:
+                    type: string
+              commentLikedBy:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    profileImg:
+                      type: string
+                    givenName:
+                      type: string
+                    familyName:
+                      type: string
+              commentReply:
+                type: array
+                items:
+                  type: object
+                  properties:
+                    _id:
+                      type: string
+                    comment:
+                      type: string
+                    commetnedBy:
+                      type: object
+                      properties:
+                        _id:
+                          type: string
+                        profileImg:
+                          type: string
+                        givenName:
+                          type: string
+                        familyName:
+                          type: string
+                        comment:
+                          type: string
+                    commentLikedBy:
+                      type: array
+                      items:
+                        type: object
+                        properties:
+                          _id:
+                            type: string
+                          profileImg:
+                            type: string
+                          givenName:
+                            type: string
+                          familyName:
+                            type: string
+        storyImg:
+          type: string
+        caption:
+          type: string
+
+      example:
+        _id: 5ebac534954b54139806c112
+        postedBy:
+          {
+            _id: 123123asdfadfasadf,
+            givenName: fake,
+            familyNam: company,
+            profileImg: asf123asdfgs.jpeg,
+          }
+        likedBy:
+          [
+            {
+              _id: 123123asdfadfasadf,
+              givenName: fake,
+              familyNam: company,
+              profileImg: asf123asdfgs.jpeg,
+            },
+            {
+              _id: 123123dfjdfghfasadf,
+              givenName: fake1,
+              familyNam: company2,
+              profileImg: asf12dfgfgs.jpeg,
+            },
+          ]
+        comments:
+          [
+            {
+              commentBy:
+                {
+                  _id: 123123dfjdfghfasadf,
+                  givenName: fake1,
+                  familyNam: company2,
+                  profileImg: asf12dfgfgs.jpeg,
+                },
+              comment: bob should build web application first,
+              commentLikedBy:
+                [
+                  {
+                    _id: 123123asdfadfasadf,
+                    givenName: fake,
+                    familyNam: company,
+                    profileImg: asf123asdfgs.jpeg,
+                  },
+                  {
+                    _id: 123123dfjdfghfasadf,
+                    givenName: fake1,
+                    familyNam: company2,
+                    profileImg: asf12dfgfgs.jpeg,
+                  },
+                ],
+              commentReply:
+                [
+                  commentBy:
+                    {
+                      _id: 123123dfjdfghfasadf,
+                      givenName: fake1,
+                      familyNam: company2,
+                      profileImg: asf12dfgfgs.jpeg,
+                    },
+                  comment: bob should build his body first ha ha,
+                  commentLikedBy:
+                    [
+                      {
+                        _id: 123123asdfadfasadf,
+                        givenName: fake,
+                        familyNam: company,
+                        profileImg: asf123asdfgs.jpeg,
+                      },
+                      {
+                        _id: 123123dfjdfghfasadf,
+                        givenName: fake1,
+                        familyNam: company2,
+                        profileImg: asf12dfgfgs.jpeg,
+                      },
+                    ],
+                ],
+            },
+          ]
+        storyImg: asdfsdglkjhoiu.jpeg,
+        caption: bob is building the builder.. he he
+
+    Token:
+      type: object
+      properties:
+        token:
+          type: string
+        expires:
+          type: string
+          format: date-time
+      example:
+        token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJzdWIiOiI1ZWJhYzUzNDk1NGI1NDEzOTgwNmMxMTIiLCJpYXQiOjE1ODkyOTg0ODQsImV4cCI6MTU4OTMwMDI4NH0.m1U63blB0MLej_WfB7yC2FTMnCziif9X8yzwDEfJXAg
+        expires: 2020-05-12T16:18:04.793Z
+
+    AuthTokens:
+      type: object
+      properties:
+        access:
+          $ref: "#/components/schemas/Token"
+
+    Error:
+      type: object
+      properties:
+        code:
+          type: number
+        message:
+          type: string
+
+  responses:
+    DuplicateEmail:
+      description: User already exists with this email
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 400
+            message: User already exists with this email
+    DuplicateOrgEmail:
+      description: Organization already exists with this email
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 400
+            message: Organization already exists with this email
+    Unauthorized:
+      description: Unauthorized
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 401
+            message: Please authenticate
+    Forbidden:
+      description: Forbidden
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 403
+            message: Forbidden
+    NotFound:
+      description: Not found
+      content:
+        application/json:
+          schema:
+            $ref: "#/components/schemas/Error"
+          example:
+            code: 404
+            message: Not found
+
+  securitySchemes:
+    bearerAuth:
+      type: http
+      scheme: bearer
+      bearerFormat: JWT

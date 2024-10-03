@@ -1,0 +1,13 @@
+{
+  "type": "service_account",
+  "project_id": "qualified-cacao-317706",
+  "private_key_id": "a7b4bc79c1c5d615a264c9aebd093fcbc322709b",
+  "private_key": "-----BEGIN PRIVATE KEY-----\nMIIEvAIBADANBgkqhkiG9w0BAQEFAASCBKYwggSiAgEAAoIBAQC3tl5qV1O5nfY1\naMbfOLlrczJT4G6oiD9QEog6B8OybFQt/Z5n4PxmG1CuzEqOL04NcIFAVLP2WpMp\ncaMegG2NITxiIENDvWFChyruZej+aU8TDA98wcvG0DwKGqYjw0oDGEYx6zNTVxNP\nxpW/GmSFA1df9LITvI9Ehaq1ATa/f8GDrj3+SsTsFzY3yuhC5nDbWCXoIf0McQIl\nwhndF1A/9wBp7ItE0zAsOm1b0WlTsrAq4UfejNWue+q5BUYnkG/pd4r0Lqi3i+/F\nlWq4Gg0ecr77x1PTJ+T+mSbaYfLM296Bx67xbvthoEcDGdyVpJEtemTDL8vz9GZ8\nVX9B45v1AgMBAAECggEADsHjDrbKHnh+bSboBslnN6buzYcTTI15TITYlZTHFx+V\nmYYsgdq0W71o+0mk2YwaQIEfmNvVAv6eoK8ks9AMPNCFKbq+vIPLes0h2TmtgDZU\naErJObPVmzhiAkvGucu3t8zs4piqrFCr1/YzVEEZ/wdYLviYj3ZPqej04Apja/mD\n36pnDpxkKt3J+NJQCxVKSJy+DSAHPHY4sUB196Tf6SzbGjIEEoBSC5i1TLgvHEzU\nLzLmg4R8/In5cWS5E+MJukkSRRuw20nbcbzsd99oi94grhQFhCjxiFf7LsFw+KJO\nj0/LntZOl0BmT9+Yrg5SFeQiJZryrO+tD/XsiIq+VwKBgQDjmtyQAPVflBvOr0He\nlHUotusKIq8SRr2WRm+YKXSShgNCFMd8t+0keF0hVP8gZWZ1TjhVHRi6RON5/h00\nSU6ACk19hdshh9B28oyMH4BLtYbvCNcSGYNXRYPpDXj4WmaCtcSig4DHFoOI9B+p\nG4CzXxcxU9MeWk68CbAn7IIkzwKBgQDOobARMHGWGslNMjUc96KYv03Iy3NWUAxn\nAsnmq/wLBHw6SCfKkXNUuJGpa2JT/pEQJCmnui8BzwjYC73pPAe/ng/KdkdfdW34\n+k7PbybNxat5xVcfs4q/TyWm5cC0IMAjbohKnh+8J/R5xabA5y/9/MSAvcT4fgir\n8tprIGlr+wKBgD/NElTfn+jJ+L2ITTuae/kMxXgS3uaNo+lzFycdP8su+8zTTFQ+\nrqARiXGlhNrM8dqiMZJSVLMqSmXRANi+T93+hVhRZGrSynH9bb59uhX+7bMl1DwD\noNie6Oo0V5uuo5uyXkt792ZXfkmuvQ1HY11ko3i1WbHheL6nLJUUbCrrAoGAaR1R\njv0A22ZW/0FKSakj+uZesIXm74KbPI/rm7/j4MrwU0m/jEn/zJpz5yash6QZsYdj\n9WI+ZYInspgOjSavnmfPCqSu3D3FqwHSs62MpOMovzKHhqX0MCwYMFXyeO+sLpod\nFTBpXnNI5+WHVdyFyoQaho+DMxISYT6SpCqB1p8CgYBxyCt61uGIf81ASy5k7/NI\nPhPN8KxIY7+OmqeuDlGPjk4tDQvyN7KTMrHx3iOTETjIsWidnyphjNFlMurdhgtn\n2Pk/aDwTocjvpvKpGKNVp+NjbPi5jARYWVxpoHAxcZwpUCB2n3NTsBWxHe9XmNKi\nXInhau1pVFQbICsjChqLQw==\n-----END PRIVATE KEY-----\n",
+  "client_email": "darshan-eats@qualified-cacao-317706.iam.gserviceaccount.com",
+  "client_id": "102686301572892208769",
+  "auth_uri": "https://accounts.google.com/o/oauth2/auth",
+  "token_uri": "https://oauth2.googleapis.com/token",
+  "auth_provider_x509_cert_url": "https://www.googleapis.com/oauth2/v1/certs",
+  "client_x509_cert_url": "https://www.googleapis.com/robot/v1/metadata/x509/darshan-eats%40qualified-cacao-317706.iam.gserviceaccount.com",
+  "universe_domain": "googleapis.com"
+}

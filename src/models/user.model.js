@@ -11,9 +11,12 @@ const userSchema = mongoose.Schema(
       required: true,
       trim: true,
     },
-    familyName: {
+    fullName: {
       type: String,
-      required: true,
+      trim: true,
+    },
+    orgName: {
+      type: String,
       trim: true,
     },
     email: {
@@ -41,6 +44,12 @@ const userSchema = mongoose.Schema(
         }
       },
       private: true, // used by the private plugin
+    },
+    type: {
+      type: String,
+      required: true,
+      default: roles.user,
+      enum: [roles.org, roles.user, roles.admin],
     },
   },
   {

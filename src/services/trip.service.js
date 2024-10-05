@@ -42,10 +42,7 @@ const getTripById = async (id) => {
  */
 
 const updateTripById = async (tripId, updateBody) => {
-  const trip = await getUserById(tripId);
-  if (!trip) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Trip not found");
-  }
+  const trip = await getTripById(tripId);
   Object.assign(trip, updateBody);
   await trip.save();
   return trip;

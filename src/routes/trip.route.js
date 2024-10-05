@@ -22,4 +22,8 @@ router
   .route("/")
   .post(validate(tripValidations.createTrip), tripController.createTrip);
 
+router
+  .route("/:tripId")
+  .put(validate(tripValidations.updateTrip), tripController.updateTrip);
+
 module.exports = router;

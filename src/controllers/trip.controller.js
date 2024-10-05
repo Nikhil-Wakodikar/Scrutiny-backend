@@ -38,8 +38,21 @@ const getTrip = catchAsync(async (req, res) => {
   res.send(trip);
 });
 
+const updateTrip = catchAsync(async (req, res) => {
+  let trip = await tripService.getTripById(req.params.tripId);
+  if (!trip) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Trip not found");
+  }
+  if (trip.postedBy.toString() !== req.user._id.toString()) {
+    throw new ApiError(httpStatus.FORBIDDEN, "Cannot access the trip");
+  }
+  trip = await tripService.updateTripById(req.params.tripId, req.body);
+  res.send(trip);
+});
+
 module.exports = {
   createTrip,
   getTrips,
   getTrip,
+  updateTrip,
 };

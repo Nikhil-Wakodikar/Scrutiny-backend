@@ -1,4 +1,5 @@
 const mongoose = require("mongoose");
+const { private, paginate, softDelete } = require("./plugins");
 
 const tripSchema = mongoose.Schema(
   {
@@ -90,6 +91,8 @@ const tripSchema = mongoose.Schema(
     timestamps: true,
   }
 );
+
+tripSchema.plugin(paginate);
 
 /**
  * @typedef Token

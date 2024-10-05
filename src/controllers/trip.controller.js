@@ -12,6 +12,22 @@ const createTrip = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(trip);
 });
 
+const getTrips = catchAsync(async (req, res) => {
+  const filter = pick(req.query, ["givenName"]);
+  const options = pick(req.query, ["sortBy", "limit", "page"]);
+  const result = await tripService.queryTrip(filter, {
+    ...options,
+    populate: [
+      {
+        path: "postedBy",
+        select: "givenName orgName fullName email",
+      },
+    ],
+  });
+  res.send(result);
+});
+
 module.exports = {
   createTrip,
+  getTrips,
 };

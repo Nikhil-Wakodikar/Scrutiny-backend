@@ -31,4 +31,12 @@ const createTrip = {
   }),
 };
 
-module.exports = { createTrip };
+const getTrips = {
+  query: Joi.object().keys({
+    sortBy: Joi.string(),
+    limit: Joi.number().integer(),
+    page: Joi.number().integer(),
+  }),
+};
+
+module.exports = { createTrip, getTrips };

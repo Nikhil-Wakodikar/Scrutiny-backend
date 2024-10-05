@@ -6,6 +6,10 @@ const { tripController } = require("../controllers");
 
 const router = express.Router();
 
+router
+  .route("/")
+  .get(validate(tripValidations.getTrips), tripController.getTrips);
+
 // Token authentication for all routes defined in this file
 router.use(auth.auth());
 

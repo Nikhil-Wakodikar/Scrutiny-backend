@@ -10,6 +10,10 @@ router
   .route("/")
   .get(validate(tripValidations.getTrips), tripController.getTrips);
 
+router
+  .route("/:tripId")
+  .get(validate(tripValidations.getTrip), tripController.getTrip);
+
 // Token authentication for all routes defined in this file
 router.use(auth.auth());
 

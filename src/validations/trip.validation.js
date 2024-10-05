@@ -1,5 +1,5 @@
 const Joi = require("joi");
-const { password, objectId } = require("./custom.validation");
+const { objectId } = require("./custom.validation");
 
 const createTrip = {
   body: Joi.object().keys({
@@ -39,4 +39,10 @@ const getTrips = {
   }),
 };
 
-module.exports = { createTrip, getTrips };
+const getTrip = {
+  params: Joi.object().keys({
+    tripId: Joi.string().custom(objectId),
+  }),
+};
+
+module.exports = { createTrip, getTrips, getTrip };

@@ -27,7 +27,19 @@ const getTrips = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getTrip = catchAsync(async (req, res) => {
+  let trip = await tripService.getTripById(req.params.tripId);
+  if (!trip) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Trip not found");
+  }
+  trip = await trip.populate([
+    { path: "postedBy", select: "givenName orgName fullName email" },
+  ]);
+  res.send(trip);
+});
+
 module.exports = {
   createTrip,
   getTrips,
+  getTrip,
 };

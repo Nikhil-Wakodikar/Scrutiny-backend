@@ -1,10 +1,6 @@
-const httpStatus = require('http-status');
-const {
-  User,
-  Organization,
-  Story
-} = require('../models');
-const ApiError = require('../utils/ApiError');
+const httpStatus = require("http-status");
+const { User } = require("../models");
+const ApiError = require("../utils/ApiError");
 
 /**
  * Create an organization
@@ -13,7 +9,10 @@ const ApiError = require('../utils/ApiError');
  */
 const createOrg = async (orgBody) => {
   if (await Organization.isEmailTaken(orgBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Organization already exists with this email');
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Organization already exists with this email"
+    );
   }
   return Organization.create({ ...orgBody, name: orgBody.company });
 };
@@ -25,7 +24,10 @@ const createOrg = async (orgBody) => {
  */
 const createUser = async (userBody) => {
   if (await User.isEmailTaken(userBody.email)) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User already exists with this email');
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "User already exists with this email"
+    );
   }
   return User.create(userBody);
 };
@@ -60,7 +62,7 @@ const getUserById = async (id) => {
  */
 const getUserByEmail = async (email) => {
   return User.findOne({
-    email
+    email,
   });
 };
 
@@ -74,10 +76,13 @@ const getUserByEmail = async (email) => {
 const updateUserById = async (userId, updateBody) => {
   const user = await getUserById(userId);
   if (!user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
+    throw new ApiError(httpStatus.BAD_REQUEST, "User not found");
   }
   if (updateBody.email && (await User.isEmailTaken(updateBody.email, userId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User already exists with this email');
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "User already exists with this email"
+    );
   }
   Object.assign(user, updateBody);
   await user.save();
@@ -93,10 +98,16 @@ const updateUserById = async (userId, updateBody) => {
 const updateOrgById = async (orgId, updateBody) => {
   const org = await Organization.findById(orgId);
   if (!org) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Organization not found');
+    throw new ApiError(httpStatus.BAD_REQUEST, "Organization not found");
   }
-  if (updateBody.email && (await Organization.isEmailTaken(updateBody.email, orgId))) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Organization already exists with this email');
+  if (
+    updateBody.email &&
+    (await Organization.isEmailTaken(updateBody.email, orgId))
+  ) {
+    throw new ApiError(
+      httpStatus.BAD_REQUEST,
+      "Organization already exists with this email"
+    );
   }
   Object.assign(org, updateBody);
   await org.save();
@@ -106,32 +117,32 @@ const updateOrgById = async (orgId, updateBody) => {
 const savepostById = async (postId, userId) => {
   const story = await Story.findById(postId);
   if (!story) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'Post not found');
+    throw new ApiError(httpStatus.BAD_REQUEST, "Post not found");
   }
   const user = await User.findById(userId);
   if (!user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
+    throw new ApiError(httpStatus.BAD_REQUEST, "User not found");
   }
   const userBody = user;
-  let saved = [...userBody.savedPosts]
+  let saved = [...userBody.savedPosts];
   var isSaved = await user.savedPosts.some(function (friend) {
     return friend.equals(story._id);
   });
   // const isSaved = user.savedPosts.findById(postId)
-  console.log(isSaved)
+  console.log(isSaved);
   if (isSaved) {
-    const result = saved.filter(id => id.toString() !== postId.toString());
-    console.log(result)
+    const result = saved.filter((id) => id.toString() !== postId.toString());
+    console.log(result);
     saved = result;
   } else if (!isSaved) {
-    saved.push(postId)
+    saved.push(postId);
   }
-  userBody.savedPosts = saved
-  let updateBody = userBody
+  userBody.savedPosts = saved;
+  let updateBody = userBody;
   Object.assign(user, updateBody);
   await user.save();
-  return user
-}
+  return user;
+};
 
 /**
  * Delete user by id
@@ -141,7 +152,7 @@ const savepostById = async (postId, userId) => {
 const deleteUserById = async (userId) => {
   const user = await getUserById(userId);
   if (!user) {
-    throw new ApiError(httpStatus.BAD_REQUEST, 'User not found');
+    throw new ApiError(httpStatus.BAD_REQUEST, "User not found");
   }
   await User.findByIdAndUpdate({ _id: userId }, { $unset: { profileImg: 1 } });
   return User;

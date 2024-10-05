@@ -1,38 +1,41 @@
-const express = require('express');
-const auth = require('../middlewares/auth');
-const validate = require('../middlewares/validate');
-const { upload } = require('../middlewares/multer')
-const userValidation = require('../validations/user.validation');
-const userController = require('../controllers/user.controller');
+const express = require("express");
+const auth = require("../middlewares/auth");
+const validate = require("../middlewares/validate");
+const { upload } = require("../middlewares/multer");
+const userValidation = require("../validations/user.validation");
+const userController = require("../controllers/user.controller");
 
 const router = express.Router();
 
 // Token authentication for all routes defined in this file
-router.use(auth());
+router.use(auth.auth());
 
 // Routes: get users, create user
 router
-  .route('/')
+  .route("/")
   .post(validate(userValidation.createUser), userController.createUser)
   .get(validate(userValidation.getUsers), userController.getUsers);
 
 // Routes: get one user, update user, delete user
 router
-  .route('/:userId')
+  .route("/:userId")
   .get(validate(userValidation.getUser), userController.getUser)
-  .patch([upload.single('profileImg'), validate(userValidation.updateUser)], userController.updateUser)
+  .patch(
+    [upload.single("profileImg"), validate(userValidation.updateUser)],
+    userController.updateUser
+  )
   .delete(validate(userValidation.deleteUser), userController.deleteUser);
 
 // Routes: add story to saved
 
 router
-  .route('/saveposts/:postId')
-  .post(validate(userValidation.savePosts), userController.savePost)
+  .route("/saveposts/:postId")
+  .post(validate(userValidation.savePosts), userController.savePost);
 // .get(validate(userValidation.getSavedPosts), userController.getSavedPosts)
 
 // Routes: update company
 router
-  .route('/org/:orgId')
+  .route("/org/:orgId")
   .patch(validate(userValidation.updateOrg), userController.updateOrg);
 
 module.exports = router;

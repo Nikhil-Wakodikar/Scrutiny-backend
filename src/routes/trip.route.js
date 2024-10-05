@@ -24,6 +24,7 @@ router
 
 router
   .route("/:tripId")
-  .put(validate(tripValidations.updateTrip), tripController.updateTrip);
+  .put(validate(tripValidations.updateTrip), tripController.updateTrip)
+  .delete(validate(tripValidations.deleteTrip), tripController.deleteTrip);
 
 module.exports = router;

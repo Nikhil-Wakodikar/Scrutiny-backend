@@ -54,12 +54,8 @@ const updateTripById = async (tripId, updateBody) => {
  * @returns {Promise<Boolean>}
  */
 const deleteTripById = async (tripId) => {
-  const trip = await getUserById(tripId);
-  if (!trip) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Trip not found");
-  }
-  await Trip.deleteMany({ _id: trip._id });
-  return Trip ? true : false;
+  await Trip.deleteMany({ _id: tripId });
+  return true;
 };
 
 module.exports = {

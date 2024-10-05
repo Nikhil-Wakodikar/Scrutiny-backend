@@ -50,9 +50,19 @@ const updateTrip = catchAsync(async (req, res) => {
   res.send(trip);
 });
 
+const deleteTrip = catchAsync(async (req, res) => {
+  let trip = await tripService.getTripById(req.params.tripId);
+  if (!trip) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Trip not found");
+  }
+  trip = await tripService.deleteTripById(req.params.tripId);
+  res.send(trip);
+});
+
 module.exports = {
   createTrip,
   getTrips,
   getTrip,
   updateTrip,
+  deleteTrip,
 };

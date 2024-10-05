@@ -75,4 +75,10 @@ const updateTrip = {
   }),
 };
 
-module.exports = { createTrip, getTrips, getTrip, updateTrip };
+const deleteTrip = {
+  params: Joi.object().keys({
+    tripId: Joi.string().custom(objectId),
+  }),
+};
+
+module.exports = { createTrip, getTrips, getTrip, updateTrip, deleteTrip };

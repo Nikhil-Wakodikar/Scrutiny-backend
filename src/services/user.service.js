@@ -3,21 +3,6 @@ const { User } = require("../models");
 const ApiError = require("../utils/ApiError");
 
 /**
- * Create an organization
- * @param {Object} orgBody
- * @returns {Promise<User>}
- */
-const createOrg = async (orgBody) => {
-  if (await Organization.isEmailTaken(orgBody.email)) {
-    throw new ApiError(
-      httpStatus.BAD_REQUEST,
-      "Organization already exists with this email"
-    );
-  }
-  return Organization.create({ ...orgBody, name: orgBody.company });
-};
-
-/**
  * Create a user
  * @param {Object} userBody
  * @returns {Promise<User>}
@@ -160,7 +145,6 @@ const deleteUserById = async (userId) => {
 
 module.exports = {
   createUser,
-  createOrg,
   queryUsers,
   getUserById,
   getUserByEmail,

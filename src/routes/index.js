@@ -2,6 +2,7 @@ const express = require("express");
 const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
 const tripRoute = require("./trip.route");
+const cityRoute = require("./cities.route");
 const docsRoute = require("./docs.route");
 const config = require("../config/config");
 
@@ -20,6 +21,10 @@ const defaultRoutes = [
   {
     path: "/trip", //base path for trip routes
     route: tripRoute,
+  },
+  {
+    path: "/city", //base path for cities route
+    route: cityRoute,
   },
 ];
 

@@ -1,9 +1,8 @@
 const express = require("express");
 const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
-const tripRoute = require("./trip.route");
-const cityRoute = require("./cities.route");
 const docsRoute = require("./docs.route");
+const scrutinyRoute = require("./scrutiny.route");
 const config = require("../config/config");
 
 const router = express.Router();
@@ -19,12 +18,8 @@ const defaultRoutes = [
     route: userRoute,
   },
   {
-    path: "/trip", //base path for trip routes
-    route: tripRoute,
-  },
-  {
-    path: "/city", //base path for cities route
-    route: cityRoute,
+    path: "/scrutiny", //base path for scrutiny route
+    route: scrutinyRoute,
   },
 ];
 

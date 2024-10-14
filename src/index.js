@@ -10,7 +10,7 @@ let server;
 logger.info(`Node Environment => ${config.env}`);
 
 // Connect to MongoDB using mongoose
-mongoose.connect(config.mongoose.url, config.mongoose.options).then((db) => {
+mongoose.connect(config.mongoose.url, config.mongoose.options,{strictQuery:true}).then((db) => {
   logger.info(`Connected to MongoDB => ${config.mongoose.url}`);
   server = app.listen(config.port, () => {
     logger.info(`Node server listening on port => ${config.port}`);

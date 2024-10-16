@@ -63,15 +63,6 @@ const getReport = async () => {
     {
       $match: { complaintsReceived: { $eq: true } },
     },
-    {
-      $project: {
-        _id: 0,
-        constituencyNumber: "$constituencyDetails.numberOfConstituency",
-        constituencyName: "$constituencyDetails.nameOfConstituency",
-        pollingStationNumber: "$pollingStationDetails.numberOfPollingStation",
-        pollingStationName: "$pollingStationDetails.nameOfPollingStation",
-      },
-    },
   ]);
 
   return report;

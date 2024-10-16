@@ -78,7 +78,8 @@ const getAbstractReportOfPollingAgent = catchAsync(async(req,res)=>{
   // console.log("object");
   let filter= {pollingAgents:0}
   let scrutinyAbstractReport = await scrutinyService.getAbstrctReport({...filter});
-  res.send({results:scrutinyAbstractReport});
+  let result = {result: scrutinyAbstractReport}
+  res.send(result);
 })
 
 module.exports = {

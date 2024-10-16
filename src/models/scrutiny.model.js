@@ -5,12 +5,12 @@ const { private, paginate, softDelete } = require("./plugins");
 const scrutinySchema = new Schema(
   {
     constituencyDetails: {
-      numberOfConstituency: { type: Number, default: null },
-      nameOfConstituency: { type: String, default: null },
+      numberOfConstituency: { type: Number },
+      nameOfConstituency: { type: String },
     },
     pollingStationDetails: {
-      numberOfPollingStation: { type: Number, default: null },
-      nameOfPollingStation: { type: String, default: null },
+      numberOfPollingStation: { type: Number },
+      nameOfPollingStation: { type: String },
     },
     totalElectors: {
       male: { type: Number, default: null },
@@ -38,7 +38,7 @@ const scrutinySchema = new Schema(
     totalAsdVoters: { type: Number, default: null },
     totalAsdVotesCast: { type: Number, default: null },
     violencePollInterruption: { type: Boolean, default: false },
-    complaintsReceived: { type: Number, default: null },
+    complaintsReceived: { type: Boolean, default: null },
     recommendataionOfRepoll: { type: Boolean, default: false },
     reasonForRepoll: { type: String, default: null }, // Added conditionally
     reasonForPollInterruption: { type: String, default: null }, // Added conditionally

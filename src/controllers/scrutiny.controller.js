@@ -53,12 +53,22 @@ const updateScrutiny = catchAsync(async (req, res) => {
 });
 
 const deleteScrutiny = catchAsync(async (req, res) => {
-  let poll = await scrutinyService.getScrutinyById(req.params.pollId);
-  if (!poll) {
+  let scrunity = await scrutinyService.getScrutinyById(req.params.scrunity);
+  if (!scrunity) {
     throw new ApiError(httpStatus.NOT_FOUND, "Scrunity not found");
   }
   scrunity = await scrutinyService.deleteScrutinyById(req.params.tripId);
   res.send(scrunity);
+});
+
+const getReport = catchAsync(async (req, res) => {
+  let scrutinyReport = await scrutinyService.getReport();
+  res.send(scrutinyReport);
+});
+
+const getAbstrctReport = catchAsync(async (req, res) => {
+  let scrutinyAbstractReport = await scrutinyService.getAbstrctReport();
+  res.send(scrutinyAbstractReport);
 });
 
 module.exports = {
@@ -67,4 +77,6 @@ module.exports = {
   getScrutiny,
   updateScrutiny,
   deleteScrutiny,
+  getReport,
+  getAbstrctReport,
 };

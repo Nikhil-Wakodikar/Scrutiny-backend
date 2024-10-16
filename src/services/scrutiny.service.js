@@ -58,10 +58,60 @@ const deleteScrutinyById = async (scrutinyId) => {
   return true;
 };
 
+const getReport = async () => {
+  const report = await Scrutiny.aggregate([
+    {
+      $match: { complaintsReceived: { $eq: true } },
+    },
+    {
+      $project: {
+        _id: 0,
+        constituencyNumber: "$constituencyDetails.numberOfConstituency",
+        constituencyName: "$constituencyDetails.nameOfConstituency",
+        pollingStationNumber: "$pollingStationDetails.numberOfPollingStation",
+        pollingStationName: "$pollingStationDetails.nameOfPollingStation",
+      },
+    },
+  ]);
+
+  return report;
+};
+
+const getAbstrctReport = async () => {
+  const report = await Scrutiny.aggregate([
+    {
+      $match: {
+        complaintsReceived: true,
+      },
+    },
+    {
+      $group: {
+        _id: {
+          numberOfConstituency: "$constituencyDetails.numberOfConstituency",
+          nameOfConstituency: "$constituencyDetails.nameOfConstituency",
+        },
+        totalComplaints: { $sum: 1 },
+      },
+    },
+    {
+      $project: {
+        _id: 0,
+        constituencyNumber: "$_id.numberOfConstituency",
+        constituencyName: "$_id.nameOfConstituency",
+        totalComplaints: 1,
+      },
+    },
+  ]);
+
+  return report;
+};
+
 module.exports = {
   createScrutiny,
   queryScrutiny,
   getScrutinyById,
   updateScrutinyById,
   deleteScrutinyById,
+  getReport,
+  getAbstrctReport,
 };

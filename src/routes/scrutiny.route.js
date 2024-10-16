@@ -8,6 +8,10 @@ const router = express.Router();
 
 router.route("/").get(scrutinyController.getScrutinys);
 
+router.route("/report").get(scrutinyController.getReport);
+
+router.route("/abstract-report").get(scrutinyController.getAbstrctReport);
+
 router.route("/:scrutinyId").get(scrutinyController.getScrutiny);
 
 // Token authentication for all routes defined in this file

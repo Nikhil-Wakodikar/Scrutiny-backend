@@ -20,6 +20,15 @@ const getScrutinys = catchAsync(async (req, res) => {
   res.send(result);
 });
 
+const getScrutinyWithApllingAgentZero = catchAsync(async (req, res) => {
+  const filter = {pollingAgents:0};
+  const options = pick(req.query, ["sortBy", "limit", "page"]);
+  const result = await scrutinyService.queryScrutiny(filter, {
+    ...options,
+  });
+  res.send(result);
+});
+
 const getScrutiny = catchAsync(async (req, res) => {
   let scrutiny = await scrutinyService.getScrutinyById(req.params.scrutinyId);
   if (!scrutiny) {
@@ -65,6 +74,13 @@ const getAbstrctReport = catchAsync(async (req, res) => {
   res.send(scrutinyAbstractReport);
 });
 
+const getAbstractReportOfPollingAgent = catchAsync(async(req,res)=>{
+  // console.log("object");
+  let filter= {pollingAgents:0}
+  let scrutinyAbstractReport = await scrutinyService.getAbstrctReport({...filter});
+  res.send(scrutinyAbstractReport);
+})
+
 module.exports = {
   createScrutiny,
   getScrutinys,
@@ -73,4 +89,6 @@ module.exports = {
   deleteScrutiny,
   getReport,
   getAbstrctReport,
+  getScrutinyWithApllingAgentZero,
+  getAbstractReportOfPollingAgent
 };

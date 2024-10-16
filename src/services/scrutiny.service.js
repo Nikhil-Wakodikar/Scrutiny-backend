@@ -77,11 +77,13 @@ const getReport = async () => {
   return report;
 };
 
-const getAbstrctReport = async () => {
+const getAbstrctReport = async (matchQuery = {complaintsReceived: true,}) => {
+  // let matchQuery = {complaintsReceived: true,}
+  console.log(matchQuery);
   const report = await Scrutiny.aggregate([
     {
       $match: {
-        complaintsReceived: true,
+        ...matchQuery
       },
     },
     {

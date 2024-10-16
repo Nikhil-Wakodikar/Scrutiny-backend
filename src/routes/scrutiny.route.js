@@ -8,9 +8,13 @@ const router = express.Router();
 
 router.route("/").get(scrutinyController.getScrutinys);
 
+router.route("/polling-agent").get(scrutinyController.getScrutinyWithApllingAgentZero);
+
 router.route("/report").get(scrutinyController.getReport);
 
 router.route("/abstract-report").get(scrutinyController.getAbstrctReport);
+
+router.route("/abstract-polling-agent").get(scrutinyController.getAbstractReportOfPollingAgent)
 
 router.route("/:scrutinyId").get(scrutinyController.getScrutiny);
 

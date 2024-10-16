@@ -1,7 +1,7 @@
 const express = require("express");
 const auth = require("../middlewares/auth");
 const validate = require("../middlewares/validate");
-// const { tripValidations } = require("../validations");
+// const { scrutinyValidations } = require("../validations");
 const { scrutinyController } = require("../controllers");
 
 const router = express.Router();

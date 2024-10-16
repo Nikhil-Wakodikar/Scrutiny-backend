@@ -12,16 +12,10 @@ const createScrutiny = catchAsync(async (req, res) => {
 });
 
 const getScrutinys = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ["givenName"]);
+  const filter = pick(req.query, ["pollingAgents"]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
-  const result = await scrutinyService.queryTrip(filter, {
+  const result = await scrutinyService.queryScrutiny(filter, {
     ...options,
-    populate: [
-      {
-        path: "postedBy",
-        select: "givenName orgName fullName email",
-      },
-    ],
   });
   res.send(result);
 });

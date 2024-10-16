@@ -66,7 +66,8 @@ const deleteScrutiny = catchAsync(async (req, res) => {
 
 const getReport = catchAsync(async (req, res) => {
   let scrutinyReport = await scrutinyService.getReport();
-  res.send(scrutinyReport);
+  let result = {results:scrutinyReport}
+  res.send(result);
 });
 
 const getAbstrctReport = catchAsync(async (req, res) => {

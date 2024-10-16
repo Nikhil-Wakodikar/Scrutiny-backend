@@ -71,7 +71,8 @@ const getReport = catchAsync(async (req, res) => {
 
 const getAbstrctReport = catchAsync(async (req, res) => {
   let scrutinyAbstractReport = await scrutinyService.getAbstrctReport();
-  res.send(scrutinyAbstractReport);
+  let result = {results: scrutinyAbstractReport}
+  res.send(result);
 });
 
 const getAbstractReportOfPollingAgent = catchAsync(async(req,res)=>{

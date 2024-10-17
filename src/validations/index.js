@@ -2,5 +2,4 @@
 
 module.exports.authValidation = require("./auth.validation");
 module.exports.userValidation = require("./user.validation");
-module.exports.tripValidations = require("./trip.validation");
-module.exports.cityValidations = require("./cities.validation");
+module.exports.scrutinyValidation = require("./scrutiny.validation");

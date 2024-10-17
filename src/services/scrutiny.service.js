@@ -26,16 +26,16 @@ const queryScrutiny = async (filter, options) => {
 };
 
 /**
- * Get Poll by id
+ * Get scrutiny by id
  * @param {ObjectId} id
- * @returns {Promise<Poll>}
+ * @returns {Promise<Scrutiny>}
  */
 const getScrutinyById = async (id) => {
   return Scrutiny.findById(id);
 };
 
 /**
- * Update Poll by id
+ * Update scrutiny by id
  * @param {ObjectId} scrutinyId
  * @param {Object} updateBody
  * @returns {Promise<Poll>}
@@ -49,7 +49,7 @@ const updateScrutinyById = async (scrutinyId, updateBody) => {
 };
 
 /**
- * Delete trip by id
+ * Delete scrutiny by id
  * @param {ObjectId} scrutinyId
  * @returns {Promise<Boolean>}
  */
@@ -58,23 +58,11 @@ const deleteScrutinyById = async (scrutinyId) => {
   return true;
 };
 
-const getReport = async () => {
-  const report = await Scrutiny.aggregate([
-    {
-      $match: { complaintsReceived: { $eq: true } },
-    },
-  ]);
-
-  return report;
-};
-
-const getAbstrctReport = async (matchQuery = {complaintsReceived: true,}) => {
-  // let matchQuery = {complaintsReceived: true,}
-  console.log(matchQuery);
+const getAbstrctReport = async (matchQuery) => {
   const report = await Scrutiny.aggregate([
     {
       $match: {
-        ...matchQuery
+        ...matchQuery,
       },
     },
     {
@@ -89,13 +77,12 @@ const getAbstrctReport = async (matchQuery = {complaintsReceived: true,}) => {
     {
       $project: {
         _id: 0,
-        constituencyNumber: "$_id.numberOfConstituency",
-        constituencyName: "$_id.nameOfConstituency",
-        totalComplaints: 1,
+        numberOfConstituency: "$_id.numberOfConstituency",
+        nameOfConstituency: "$_id.nameOfConstituency",
+        count: "$totalComplaints",
       },
     },
   ]);
-
   return report;
 };
 
@@ -105,6 +92,5 @@ module.exports = {
   getScrutinyById,
   updateScrutinyById,
   deleteScrutinyById,
-  getReport,
   getAbstrctReport,
 };

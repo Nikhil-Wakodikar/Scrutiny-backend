@@ -12,7 +12,7 @@ const createScrutiny = catchAsync(async (req, res) => {
 });
 
 const getScrutinys = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ["pollingAgents"]);
+  const filter = pick(req.query, ["pollingAgents","complaintsReceived"]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
   const result = await scrutinyService.queryScrutiny(filter, {
     ...options,
@@ -20,12 +20,10 @@ const getScrutinys = catchAsync(async (req, res) => {
   res.send(result);
 });
 
-const getScrutinyWithApllingAgentZero = catchAsync(async (req, res) => {
-  const filter = {pollingAgents:0};
-  const options = pick(req.query, ["sortBy", "limit", "page"]);
-  const result = await scrutinyService.queryScrutiny(filter, {
-    ...options,
-  });
+const getAbstrctReport = catchAsync(async (req, res) => {
+  let matchQuery = pick(req.query,["pollingAgents","complaintsReceived"])
+  let abstractReport = await scrutinyService.getAbstrctReport({...matchQuery});
+  let result = {results: abstractReport}
   res.send(result);
 });
 
@@ -34,9 +32,6 @@ const getScrutiny = catchAsync(async (req, res) => {
   if (!scrutiny) {
     throw new ApiError(httpStatus.NOT_FOUND, "Scrunity not found");
   }
-  // poll = await poll.populate([
-  //   { path: "postedBy", select: "givenName orgName fullName email" },
-  // ]);
   res.send(scrutiny);
 });
 
@@ -45,9 +40,6 @@ const updateScrutiny = catchAsync(async (req, res) => {
   if (!scrutiny) {
     throw new ApiError(httpStatus.NOT_FOUND, "Scrunity not found");
   }
-  // if (trip.postedBy.toString() !== req.user._id.toString()) {
-  //   throw new ApiError(httpStatus.FORBIDDEN, "Cannot access the trip");
-  // }
   scrutiny = await scrutinyService.updateScrutinyById(
     req.params.pollId,
     req.body
@@ -64,34 +56,11 @@ const deleteScrutiny = catchAsync(async (req, res) => {
   res.send(scrunity);
 });
 
-const getReport = catchAsync(async (req, res) => {
-  let scrutinyReport = await scrutinyService.getReport();
-  let result = {results:scrutinyReport}
-  res.send(result);
-});
-
-const getAbstrctReport = catchAsync(async (req, res) => {
-  let scrutinyAbstractReport = await scrutinyService.getAbstrctReport();
-  let result = {results: scrutinyAbstractReport}
-  res.send(result);
-});
-
-const getAbstractReportOfPollingAgent = catchAsync(async(req,res)=>{
-  // console.log("object");
-  let filter= {pollingAgents:0}
-  let scrutinyAbstractReport = await scrutinyService.getAbstrctReport({...filter});
-  let result = {results: scrutinyAbstractReport}
-  res.send(result);
-})
-
 module.exports = {
   createScrutiny,
   getScrutinys,
   getScrutiny,
   updateScrutiny,
   deleteScrutiny,
-  getReport,
   getAbstrctReport,
-  getScrutinyWithApllingAgentZero,
-  getAbstractReportOfPollingAgent
 };

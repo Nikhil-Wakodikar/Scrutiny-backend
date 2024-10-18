@@ -10,6 +10,8 @@ const getScrutinys = {
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
+    tenderedVotes: Joi.boolean(),
+    votersUsedAlternateDoc: Joi.boolean(),
   }),
 };
 
@@ -20,6 +22,8 @@ const getAbstrctReport = {
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
+    tenderedVotes: Joi.boolean(),
+    votersUsedAlternateDoc: Joi.boolean(),
   }),
 };
 

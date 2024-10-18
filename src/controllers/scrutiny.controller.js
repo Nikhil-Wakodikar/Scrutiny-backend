@@ -12,8 +12,26 @@ const createScrutiny = catchAsync(async (req, res) => {
 });
 
 const getScrutinys = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ["pollingAgents","complaintsReceived"]);
+  let filter = pick(req.query, [
+    "pollingAgents",
+    "complaintsReceived",
+    "tenderedVotes",
+    "votersUsedAlternateDoc",
+  ]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
+  if (filter.tenderedVotes) {
+    filter = { tenderedVotes: { $gt: 5 } };
+  }
+  if (filter.votersUsedAlternateDoc) {
+    filter = {
+      $expr: {
+        $gt: [
+          "$votersAlternativeDocument",
+          { $multiply: ["$votersEPIC", 0.25] },
+        ],
+      },
+    };
+  }
   const result = await scrutinyService.queryScrutiny(filter, {
     ...options,
   });
@@ -21,9 +39,29 @@ const getScrutinys = catchAsync(async (req, res) => {
 });
 
 const getAbstrctReport = catchAsync(async (req, res) => {
-  let matchQuery = pick(req.query,["pollingAgents","complaintsReceived"])
-  let abstractReport = await scrutinyService.getAbstrctReport({...matchQuery});
-  let result = {results: abstractReport}
+  let matchQuery = pick(req.query, [
+    "pollingAgents",
+    "complaintsReceived",
+    "tenderedVotes",
+    "votersUsedAlternateDoc",
+  ]);
+  if (matchQuery.tenderedVotes) {
+    matchQuery = { tenderedVotes: { $gt: 5 } };
+  }
+  if (matchQuery.votersUsedAlternateDoc) {
+    matchQuery = {
+      $expr: {
+        $gt: [
+          "$votersAlternativeDocument",
+          { $multiply: ["$votersEPIC", 0.25] },
+        ],
+      },
+    };
+  }
+  let abstractReport = await scrutinyService.getAbstrctReport({
+    ...matchQuery,
+  });
+  let result = { results: abstractReport };
   res.send(result);
 });
 

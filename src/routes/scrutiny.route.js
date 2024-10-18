@@ -1,7 +1,7 @@
 const express = require("express");
 const auth = require("../middlewares/auth");
 const validate = require("../middlewares/validate");
-const { scrutinyValidations } = require("../validations");
+const { scrutinyValidation } = require("../validations");
 const { scrutinyController } = require("../controllers");
 
 const router = express.Router();
@@ -9,18 +9,18 @@ const router = express.Router();
 router
   .route("/")
   .get(
-    validate(scrutinyValidations.getScrutinys),
+    validate(scrutinyValidation.getScrutinys),
     scrutinyController.getScrutinys
   )
   .post(
-    validate(scrutinyValidations.createScrutiny),
+    validate(scrutinyValidation.createScrutiny),
     scrutinyController.createScrutiny
   );
 
 router
   .route("/abstract-report")
   .get(
-    validate(scrutinyValidations.getAbstrctReport),
+    validate(scrutinyValidation.getAbstrctReport),
     scrutinyController.getAbstrctReport
   );
 
@@ -30,15 +30,15 @@ router
 router
   .route("/:scrutinyId")
   .get(
-    validate(scrutinyValidations.getScrutinyById),
+    validate(scrutinyValidation.getScrutinyById),
     scrutinyController.getScrutiny
   )
   .put(
-    validate(scrutinyValidations.updateScrutiny),
+    validate(scrutinyValidation.updateScrutiny),
     scrutinyController.updateScrutiny
   )
   .delete(
-    validate(scrutinyValidations.deleteScrutiny),
+    validate(scrutinyValidation.deleteScrutiny),
     scrutinyController.deleteScrutiny
   );
 

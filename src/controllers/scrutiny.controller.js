@@ -20,7 +20,7 @@ const getScrutinys = catchAsync(async (req, res) => {
   ]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
   if (filter.tenderedVotes) {
-    filter = { tenderedVotes: { $gt: 5 } };
+    filter = { tenderedVotes: { $gt: 4 } };
   }
   if (filter.votersUsedAlternateDoc) {
     filter = {

@@ -1,38 +1,50 @@
-const { Storage } = require("@google-cloud/storage");
+// const { Storage } = require("@google-cloud/storage");
+const axios = require("axios");
 const config = require("../config/config");
 const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
 const fs = require("fs");
+const FormData = require("form-data");
 
-const storage = new Storage({
-  keyFilename: "src/qualified-cacao-317706-a7b4bc79c1c5.json",
-});
-
-const bucketName = "image_bucket_tempp";
-const bucket = storage.bucket(bucketName);
-
-// Sending the upload request
-const upload = async (file) => {
-  let url;
-  bucket.upload(
-    file.path,
-    {
-      destination: `${file.filename}`,
-    },
-    function (err, file) {
-      if (err) {
-        console.error(`Error uploading image image_to_upload.jpeg: ${err}`);
-        throw new ApiError(
-          httpStatus.SERVICE_UNAVAILABLE,
-          "something went wrong"
-        );
-      } else {
-        console.log(`Image image_to_upload.jpeg uploaded to ${bucketName}.`);
+/**
+ * Save a file
+ * @param {string} file
+ * @param {string} name
+ * @returns {Promise}
+ */
+const save = async (file) => {
+  try {
+    let form = new FormData();
+    form.append("file", fs.createReadStream(file.path));
+    console.log(form);
+    const upload = await axios({
+      method: "post",
+      url: `${config.dataExtrationServiceProvider}/upload`,
+      data: form,
+      headers: {
+        "content-type": "maltipart/form-data",
+      },
+    });
+    let imgData = { ...upload.data.data };
+    // console.log(imgData);
+    await deleteLocal(file.path);
+    return imgData;
+  } catch (error) {
+    console.log("error ==>", error.code);
+    // empty temp except .gitkeep
+    const directory = "temp";
+    const fileToKeep = ".gitkeep";
+    fs.readdir(directory, (err, files) => {
+      if (err) throw err;
+      const filesToDelete = files.filter((file) => file !== fileToKeep);
+      for (const file of filesToDelete) {
+        fs.unlinkSync(`${directory}/${file}`, (err) => {
+          if (err) throw err;
+        });
       }
-    }
-  );
-  url = `${config.storageServiceProvider}/${bucketName}/${file.filename}`;
-  return url;
+    });
+    return error;
+  }
 };
 
 /**
@@ -45,4 +57,4 @@ const deleteLocal = async (path) => {
   return;
 };
 
-module.exports = { upload, deleteLocal };
+module.exports = { deleteLocal, save };

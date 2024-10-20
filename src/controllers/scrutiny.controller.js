@@ -46,7 +46,7 @@ const getAbstrctReport = catchAsync(async (req, res) => {
     "votersUsedAlternateDoc",
   ]);
   if (matchQuery.tenderedVotes) {
-    matchQuery = { tenderedVotes: { $gt: 5 } };
+    matchQuery = { tenderedVotes: { $gt: 4 } };
   }
   if (matchQuery.votersUsedAlternateDoc) {
     matchQuery = {

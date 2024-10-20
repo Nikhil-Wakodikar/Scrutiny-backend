@@ -4,14 +4,10 @@ const { private, paginate, softDelete } = require("./plugins");
 
 const scrutinySchema = new Schema(
   {
-    constituencyDetails: {
-      numberOfConstituency: { type: Number },
-      nameOfConstituency: { type: String },
-    },
-    pollingStationDetails: {
-      numberOfPollingStation: { type: Number },
-      nameOfPollingStation: { type: String },
-    },
+    numberOfConstituency: { type: Number },
+    nameOfConstituency: { type: String },
+    numberOfPollingStation: { type: Number },
+    nameOfPollingStation: { type: String },
     totalElectors: {
       male: { type: Number, default: null },
       female: { type: Number, default: null },
@@ -32,8 +28,17 @@ const scrutinySchema = new Schema(
     votersRule49O: { type: Number, default: null },
     pollingAgents: { type: Number, default: null },
     overseasElectors: { type: Number, default: null },
-    buCuVvpatUsed: { type: Number, default: null },
-    buCuVvpatChanged: { type: Number, default: null },
+    buCuVvpatUsed: {
+      ballotUnit: { type: Number, default: null },
+      controlUnit: { type: Number, default: null },
+      vvpat: { type: Number, default: null },
+    },
+
+    buCuVvpatChanged: {
+      ballotUnit: { type: Boolean, default: null },
+      controlUnit: { type: Boolean, default: null },
+      vvpat: { type: Boolean, default: null },
+    },
     changeTimeReason: { type: String, default: null },
     totalAsdVoters: { type: Number, default: null },
     totalAsdVotesCast: { type: Number, default: null },

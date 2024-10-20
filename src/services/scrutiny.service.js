@@ -68,8 +68,8 @@ const getAbstrctReport = async (matchQuery) => {
     {
       $group: {
         _id: {
-          numberOfConstituency: "$constituencyDetails.numberOfConstituency",
-          nameOfConstituency: "$constituencyDetails.nameOfConstituency",
+          numberOfConstituency: "$numberOfConstituency",
+          nameOfConstituency: "$nameOfConstituency",
         },
         totalComplaints: { $sum: 1 },
       },

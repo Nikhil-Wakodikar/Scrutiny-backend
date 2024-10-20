@@ -28,7 +28,7 @@ const save = async (file) => {
     let imgData = { ...upload.data.data };
     // console.log(imgData);
     await deleteLocal(file.path);
-    return imgData;
+    return upload.data;
   } catch (error) {
     console.log("error ==>", error.code);
     // empty temp except .gitkeep

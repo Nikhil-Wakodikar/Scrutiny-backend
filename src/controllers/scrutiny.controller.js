@@ -2,7 +2,7 @@ const httpStatus = require("http-status");
 const pick = require("../utils/pick");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
-const { scrutinyService } = require("../services");
+const { scrutinyService, fileService } = require("../services");
 
 const createScrutiny = catchAsync(async (req, res) => {
   const scrunity = await scrutinyService.createScrutiny({
@@ -94,6 +94,22 @@ const deleteScrutiny = catchAsync(async (req, res) => {
   res.send(scrunity);
 });
 
+const getScrutinyDataByImg = catchAsync(async (req, res) => {
+  if (!req.file) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Image not found!");
+  }
+  const upload = await fileService.save(req.file);
+
+  if (!upload) {
+    throw new ApiError(
+      httpStatus.SERVICE_UNAVAILABLE,
+      upload.code || `Something went wrong !!`
+    );
+  }
+
+  res.send(upload);
+});
+
 module.exports = {
   createScrutiny,
   getScrutinys,
@@ -101,4 +117,5 @@ module.exports = {
   updateScrutiny,
   deleteScrutiny,
   getAbstrctReport,
+  getScrutinyDataByImg,
 };

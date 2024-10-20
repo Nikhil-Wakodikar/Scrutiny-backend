@@ -3,6 +3,7 @@ const auth = require("../middlewares/auth");
 const validate = require("../middlewares/validate");
 const { scrutinyValidation } = require("../validations");
 const { scrutinyController } = require("../controllers");
+const { upload } = require("../middlewares/multer");
 
 const router = express.Router();
 
@@ -23,6 +24,10 @@ router
     validate(scrutinyValidation.getAbstrctReport),
     scrutinyController.getAbstrctReport
   );
+
+router
+  .route("/get-data-by-image")
+  .post(upload.single("file"), scrutinyController.getScrutinyDataByImg);
 
 // Token authentication for all routes defined in this file
 // router.use(auth.auth());

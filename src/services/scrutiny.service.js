@@ -8,7 +8,11 @@ const ApiError = require("../utils/ApiError");
  * @returns {Promise<Scrutiny>}
  */
 const createScrutiny = async (scrutinyBody) => {
-  return Scrutiny.create(scrutinyBody);
+  try {
+    return Scrutiny.create(scrutinyBody);
+  } catch (err) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "DB error");
+  }
 };
 
 /**

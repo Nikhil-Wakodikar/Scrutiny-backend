@@ -108,14 +108,12 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
   }
 
   let obj = {
-    constituencyDetails: {
-      numberOfConstituency: upload.data["Assembly Constituency Number"],
-      nameOfConstituency: upload.data["Assembly Constituency Name"],
-    },
-    pollingStationDetails: {
-      numberOfPollingStation: upload.data["Polling Station Number"],
-      nameOfPollingStation: upload.data["Polling Station Name"],
-    },
+    numberOfConstituency: upload.data["Assembly Constituency Number"],
+    nameOfConstituency: upload.data["Assembly Constituency Name"],
+
+    numberOfPollingStation: upload.data["Polling Station Number"],
+    nameOfPollingStation: upload.data["Polling Station Name"],
+
     totalElectors: {
       Male: upload.data["Total Electors in the PS"]
         ? upload.data["Total Electors in the PS"]["Male"]

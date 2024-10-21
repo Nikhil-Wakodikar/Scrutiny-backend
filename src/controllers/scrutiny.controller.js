@@ -178,15 +178,9 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
         : null,
     },
     buCuVvpatChanged: {
-      ballotUnit: upload.data["Whether unit was changed/replaced (Y/N)"]
-        ? upload.data["Whether unit was changed/replaced (Y/N)"]["BU"]
-        : null,
-      controlUnit: upload.data["Whether unit was changed/replaced (Y/N)"]
-        ? upload.data["Whether unit was changed/replaced (Y/N)"]["CU"]
-        : null,
-      vvpat: upload.data["Whether unit was changed/replaced (Y/N)"]
-        ? upload.data["Whether unit was changed/replaced (Y/N)"]["VVPAT"]
-        : null,
+      ballotUnit: null,
+      controlUnit: null,
+      vvpat: null,
     },
     changeTimeReason:
       upload.data["If so, the time when changed and reason for it"],

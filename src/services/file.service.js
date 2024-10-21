@@ -16,7 +16,7 @@ const save = async (file) => {
   try {
     let form = new FormData();
     form.append("file", fs.createReadStream(file.path));
-    console.log(form);
+    // console.log(form);
     const upload = await axios({
       method: "post",
       url: `${config.dataExtrationServiceProvider}/upload`,

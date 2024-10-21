@@ -117,16 +117,32 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
       nameOfPollingStation: upload.data["Polling Station Name"],
     },
     totalElectors: {
-      Male: upload.data["Total Electors in the PS"]["Male"],
-      Female: upload.data["Total Electors in the PS"]["Female"],
-      TG: upload.data["Total Electors in the PS"]["TG"],
-      Total: upload.data["Total Electors in the PS"]["Total"],
+      Male: upload.data["Total Electors in the PS"]
+        ? upload.data["Total Electors in the PS"]["Male"]
+        : "",
+      Female: upload.data["Total Electors in the PS"]
+        ? upload.data["Total Electors in the PS"]["Female"]
+        : "",
+      TG: upload.data["Total Electors in the PS"]
+        ? upload.data["Total Electors in the PS"]["TG"]
+        : "",
+      Total: upload.data["Total Electors in the PS"]
+        ? upload.data["Total Electors in the PS"]["Total"]
+        : "",
     },
     personsVoted: {
-      Male: upload.data["Total persons voted in PS"]["Male"],
-      Female: upload.data["Total persons voted in PS"]["Female"],
-      TG: upload.data["Total persons voted in PS"]["TG"],
-      Total: upload.data["Total persons voted in PS"]["Total"],
+      Male: upload.data["Total persons voted in PS"]
+        ? upload.data["Total persons voted in PS"]["Male"]
+        : "",
+      Female: upload.data["Total persons voted in PS"]
+        ? upload.data["Total persons voted in PS"]["Female"]
+        : "",
+      TG: upload.data["Total persons voted in PS"]
+        ? upload.data["Total persons voted in PS"]["TG"]
+        : "",
+      Total: upload.data["Total persons voted in PS"]
+        ? upload.data["Total persons voted in PS"]["Total"]
+        : "",
     },
     tenderedVotes: upload.data["Number of Tendered votes"],
     challengedVotes: upload.data["Number of challenged votes"],
@@ -148,14 +164,26 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
     overseasElectors:
       upload.data["Number of overseas electors who voted in the poll"],
     buCuVvpatUsed: {
-      BU: upload.data["Number of units used"]["BU"],
-      CU: upload.data["Number of units used"]["CU"],
-      VVPAT: upload.data["Number of units used"]["VVPAT"],
+      BU: upload.data["Number of units used"]
+        ? upload.data["Number of units used"]["BU"]
+        : "",
+      CU: upload.data["Number of units used"]
+        ? upload.data["Number of units used"]["CU"]
+        : "",
+      VVPAT: upload.data["Number of units used"]
+        ? upload.data["Number of units used"]["VVPAT"]
+        : "",
     },
     buCuVvpatChanged: {
-      BU: upload.data["Whether unit was changed/replaced (Y/N)"]["BU"],
-      CU: upload.data["Whether unit was changed/replaced (Y/N)"]["CU"],
-      VVPAT: upload.data["Whether unit was changed/replaced (Y/N)"]["VVPAT"],
+      BU: upload.data["Whether unit was changed/replaced (Y/N)"]
+        ? upload.data["Whether unit was changed/replaced (Y/N)"]["BU"]
+        : "",
+      CU: upload.data["Whether unit was changed/replaced (Y/N)"]
+        ? upload.data["Whether unit was changed/replaced (Y/N)"]["CU"]
+        : "",
+      VVPAT: upload.data["Whether unit was changed/replaced (Y/N)"]
+        ? upload.data["Whether unit was changed/replaced (Y/N)"]["VVPAT"]
+        : "",
     },
     changeTimeReason:
       upload.data["If so, the time when changed and reason for it"],

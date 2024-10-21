@@ -198,7 +198,7 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
       upload.data[
         "Any complaints received with respect to polling station (Y/N)"
       ],
-    recommendataionOfRepoll: upload.data["RO Recommendation for Re-Poll (Y/N)"],
+    recommendataionOfRepoll: null,
   };
   res.send(obj);
 });

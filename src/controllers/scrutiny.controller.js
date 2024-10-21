@@ -107,7 +107,72 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
     );
   }
 
-  res.send(upload);
+  let obj = {
+    constituencyDetails: {
+      numberOfConstituency: upload.data["Assembly Constituency Number"],
+      nameOfConstituency: upload.data["Assembly Constituency Name"],
+    },
+    pollingStationDetails: {
+      numberOfPollingStation: upload.data["Polling Station Number"],
+      nameOfPollingStation: upload.data["Polling Station Name"],
+    },
+    totalElectors: {
+      Male: upload.data["Total Electors in the PS"]["Male"],
+      Female: upload.data["Total Electors in the PS"]["Female"],
+      TG: upload.data["Total Electors in the PS"]["TG"],
+      Total: upload.data["Total Electors in the PS"]["Total"],
+    },
+    personsVoted: {
+      Male: upload.data["Total persons voted in PS"]["Male"],
+      Female: upload.data["Total persons voted in PS"]["Female"],
+      TG: upload.data["Total persons voted in PS"]["TG"],
+      Total: upload.data["Total persons voted in PS"]["Total"],
+    },
+    tenderedVotes: upload.data["Number of Tendered votes"],
+    challengedVotes: upload.data["Number of challenged votes"],
+    proxyVotesByCSVs: upload.data["Number of Proxy votes by CSVs"],
+    votersEPIC:
+      upload.data[
+        "Number of electors who exercised their right of vote on the basis of EPIC"
+      ],
+    votersAlternativeDocument:
+      upload.data[
+        "Number of electors who exercised their right of vote on the basis alternative document"
+      ],
+    votersRule49O:
+      upload.data[
+        "Total voters who exercised their right under Rule 49 O, who decided not to record vote"
+      ],
+    pollingAgents:
+      upload.data["Number of polling agents in the polling station"],
+    overseasElectors:
+      upload.data["Number of overseas electors who voted in the poll"],
+    buCuVvpatUsed: {
+      BU: upload.data["Number of units used"]["BU"],
+      CU: upload.data["Number of units used"]["CU"],
+      VVPAT: upload.data["Number of units used"]["VVPAT"],
+    },
+    buCuVvpatChanged: {
+      BU: upload.data["Whether unit was changed/replaced (Y/N)"]["BU"],
+      CU: upload.data["Whether unit was changed/replaced (Y/N)"]["CU"],
+      VVPAT: upload.data["Whether unit was changed/replaced (Y/N)"]["VVPAT"],
+    },
+    changeTimeReason:
+      upload.data["If so, the time when changed and reason for it"],
+    totalAsdVoters: upload.data["Total ASD voters in the ASD voters list"],
+    totalAsdVotesCast:
+      upload.data["Total persons who cast their vote from the ASD voters list"],
+    violencePollInterruption:
+      upload.data[
+        "Any incident of violence or poll interruption due to any reason (Y/N)"
+      ],
+    complaintsReceived:
+      upload.data[
+        "Any complaints received with respect to polling station (Y/N)"
+      ],
+    recommendataionOfRepoll: upload.data["RO Recommendation for Re-Poll (Y/N)"],
+  };
+  res.send(obj);
 });
 
 module.exports = {

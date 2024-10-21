@@ -117,30 +117,30 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
     totalElectors: {
       male: upload.data["Total Electors in the PS"]
         ? parseInt(upload.data["Total Electors in the PS"]["Male"])
-        : "",
+        : null,
       female: upload.data["Total Electors in the PS"]
         ? parseInt(upload.data["Total Electors in the PS"]["Female"])
-        : "",
+        : null,
       tg: upload.data["Total Electors in the PS"]
         ? parseInt(upload.data["Total Electors in the PS"]["TG"])
-        : "",
+        : null,
       total: upload.data["Total Electors in the PS"]
         ? parseInt(upload.data["Total Electors in the PS"]["Total"])
-        : "",
+        : null,
     },
     personsVoted: {
       male: upload.data["Total persons voted in PS"]
         ? parseInt(upload.data["Total persons voted in PS"]["Male"])
-        : "",
+        : null,
       female: upload.data["Total persons voted in PS"]
         ? parseInt(upload.data["Total persons voted in PS"]["Female"])
-        : "",
+        : null,
       tg: upload.data["Total persons voted in PS"]
         ? parseInt(upload.data["Total persons voted in PS"]["TG"])
-        : "",
+        : null,
       total: upload.data["Total persons voted in PS"]
         ? parseInt(upload.data["Total persons voted in PS"]["Total"])
-        : "",
+        : null,
     },
     tenderedVotes: parseInt(upload.data["Number of Tendered votes"]),
     challengedVotes: parseInt(upload.data["Number of challenged votes"]),
@@ -169,24 +169,24 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
     buCuVvpatUsed: {
       ballotUnit: upload.data["Number of units used"]
         ? parseInt(upload.data["Number of units used"]["BU"])
-        : "",
+        : null,
       controlUnit: upload.data["Number of units used"]
         ? parseInt(upload.data["Number of units used"]["CU"])
-        : "",
+        : null,
       vvpat: upload.data["Number of units used"]
         ? parseInt(upload.data["Number of units used"]["VVPAT"])
-        : "",
+        : null,
     },
     buCuVvpatChanged: {
       ballotUnit: upload.data["Whether unit was changed/replaced (Y/N)"]
         ? upload.data["Whether unit was changed/replaced (Y/N)"]["BU"]
-        : "",
+        : null,
       controlUnit: upload.data["Whether unit was changed/replaced (Y/N)"]
         ? upload.data["Whether unit was changed/replaced (Y/N)"]["CU"]
-        : "",
+        : null,
       vvpat: upload.data["Whether unit was changed/replaced (Y/N)"]
         ? upload.data["Whether unit was changed/replaced (Y/N)"]["VVPAT"]
-        : "",
+        : null,
     },
     changeTimeReason:
       upload.data["If so, the time when changed and reason for it"],

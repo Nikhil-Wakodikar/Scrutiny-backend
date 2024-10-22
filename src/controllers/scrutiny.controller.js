@@ -100,7 +100,7 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
   }
   const upload = await fileService.save(req.file);
 
-  if (!upload) {
+  if (!upload || !upload.data) {
     throw new ApiError(
       httpStatus.SERVICE_UNAVAILABLE,
       upload.code || `Something went wrong !!`
@@ -108,73 +108,129 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
   }
 
   let obj = {
-    numberOfConstituency: parseInt(upload.data["Assembly Constituency Number"]),
+    numberOfConstituency: upload.data["Assembly Constituency Number"]
+      ? parseInt(upload.data["Assembly Constituency Number"])
+      : null,
     nameOfConstituency: upload.data["Assembly Constituency Name"],
 
-    numberOfPollingStation: parseInt(upload.data["Polling Station Number"]),
+    numberOfPollingStation: upload.data["Polling Station Number"]
+      ? parseInt(upload.data["Polling Station Number"])
+      : null,
     nameOfPollingStation: upload.data["Polling Station Name"],
 
     totalElectors: {
       male: upload.data["Total Electors in the PS"]
-        ? parseInt(upload.data["Total Electors in the PS"]["Male"])
+        ? upload.data["Total Electors in the PS"]["Male"]
+          ? parseInt(upload.data["Total Electors in the PS"]["Male"])
+          : null
         : null,
       female: upload.data["Total Electors in the PS"]
-        ? parseInt(upload.data["Total Electors in the PS"]["Female"])
+        ? upload.data["Total Electors in the PS"]["Female"]
+          ? parseInt(upload.data["Total Electors in the PS"]["Female"])
+          : null
         : null,
       tg: upload.data["Total Electors in the PS"]
-        ? parseInt(upload.data["Total Electors in the PS"]["TG"])
+        ? upload.data["Total Electors in the PS"]["TG"]
+          ? parseInt(upload.data["Total Electors in the PS"]["TG"])
+          : null
         : null,
       total: upload.data["Total Electors in the PS"]
-        ? parseInt(upload.data["Total Electors in the PS"]["Total"])
+        ? upload.data["Total Electors in the PS"]["Total"]
+          ? parseInt(upload.data["Total Electors in the PS"]["Total"])
+          : null
         : null,
     },
     personsVoted: {
       male: upload.data["Total persons voted in PS"]
-        ? parseInt(upload.data["Total persons voted in PS"]["Male"])
+        ? upload.data["Total persons voted in PS"]["Male"]
+          ? parseInt(upload.data["Total persons voted in PS"]["Male"])
+          : null
         : null,
       female: upload.data["Total persons voted in PS"]
-        ? parseInt(upload.data["Total persons voted in PS"]["Female"])
+        ? upload.data["Total persons voted in PS"]["Female"]
+          ? parseInt(upload.data["Total persons voted in PS"]["Female"])
+          : null
         : null,
       tg: upload.data["Total persons voted in PS"]
-        ? parseInt(upload.data["Total persons voted in PS"]["TG"])
+        ? upload.data["Total persons voted in PS"]["TG"]
+          ? parseInt(upload.data["Total persons voted in PS"]["TG"])
+          : null
         : null,
       total: upload.data["Total persons voted in PS"]
-        ? parseInt(upload.data["Total persons voted in PS"]["Total"])
+        ? upload.data["Total persons voted in PS"]["Total"]
+          ? parseInt(upload.data["Total persons voted in PS"]["Total"])
+          : null
         : null,
     },
-    tenderedVotes: parseInt(upload.data["Number of Tendered votes"]),
-    challengedVotes: parseInt(upload.data["Number of challenged votes"]),
-    proxyVotesByCSVs: parseInt(upload.data["Number of Proxy votes by CSVs"]),
-    votersEPIC: parseInt(
-      upload.data[
-        "Number of electors who exercised their right of vote on the basis of EPIC"
-      ]
-    ),
-    votersAlternativeDocument: parseInt(
-      upload.data[
-        "Number of electors who exercised their right of vote on the basis alternative document"
-      ]
-    ),
-    votersRule49O: parseInt(
-      upload.data[
-        "Total voters who exercised their right under Rule 49 O, who decided not to record vote"
-      ]
-    ),
-    pollingAgents: parseInt(
-      upload.data["Number of polling agents in the polling station"]
-    ),
-    overseasElectors: parseInt(
-      upload.data["Number of overseas electors who voted in the poll"]
-    ),
+    tenderedVotes: upload.data["Number of Tendered votes"]
+      ? upload.data["Number of Tendered votes"]
+        ? parseInt(upload.data["Number of Tendered votes"])
+        : null
+      : null,
+    challengedVotes: upload.data["Number of challenged votes"]
+      ? upload.data["Number of challenged votes"]
+        ? parseInt(upload.data["Number of challenged votes"])
+        : null
+      : null,
+    proxyVotesByCSVs: upload.data["Number of Proxy votes by CSVs"]
+      ? upload.data["Number of Proxy votes by CSVs"]
+        ? parseInt(upload.data["Number of Proxy votes by CSVs"])
+        : null
+      : null,
+    votersEPIC: upload.data[
+      "Number of electors who exercised their right of vote on the basis of EPIC"
+    ]
+      ? parseInt(
+          upload.data[
+            "Number of electors who exercised their right of vote on the basis of EPIC"
+          ]
+        )
+      : null,
+    votersAlternativeDocument: upload.data[
+      "Number of electors who exercised their right of vote on the basis alternative document"
+    ]
+      ? parseInt(
+          upload.data[
+            "Number of electors who exercised their right of vote on the basis alternative document"
+          ]
+        )
+      : null,
+    votersRule49O: upload.data[
+      "Total voters who exercised their right under Rule 49 O, who decided not to record vote"
+    ]
+      ? parseInt(
+          upload.data[
+            "Total voters who exercised their right under Rule 49 O, who decided not to record vote"
+          ]
+        )
+      : null,
+    pollingAgents: upload.data[
+      "Number of polling agents in the polling station"
+    ]
+      ? parseInt(upload.data["Number of polling agents in the polling station"])
+      : null,
+    overseasElectors: upload.data[
+      "Number of overseas electors who voted in the poll"
+    ]
+      ? parseInt(
+          upload.data["Number of overseas electors who voted in the poll"]
+        )
+      : null,
     buCuVvpatUsed: {
       ballotUnit: upload.data["Number of units used"]
-        ? parseInt(upload.data["Number of units used"]["BU"])
+        ? upload.data["Number of units used"]["BU"]
+          ? parseInt(upload.data["Number of units used"]["BU"])
+          : null
         : null,
       controlUnit: upload.data["Number of units used"]
-        ? parseInt(upload.data["Number of units used"]["CU"])
+        ? upload.data["Number of units used"]["CU"]
+          ? parseInt(upload.data["Number of units used"]["CU"])
+          : null
         : null,
       vvpat: upload.data["Number of units used"]
-        ? parseInt(upload.data["Number of units used"]["VVPAT"])
+        ? upload.data["Number of units used"]["VVPAT"]
+          ? parseInt(upload.data["Number of units used"]["VVPAT"])
+          : null
         : null,
     },
     buCuVvpatChanged: {
@@ -184,12 +240,18 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
     },
     changeTimeReason:
       upload.data["If so, the time when changed and reason for it"],
-    totalAsdVoters: parseInt(
-      upload.data["Total ASD voters in the ASD voters list"]
-    ),
-    totalAsdVotesCast: parseInt(
-      upload.data["Total persons who cast their vote from the ASD voters list"]
-    ),
+    totalAsdVoters: upload.data["Total ASD voters in the ASD voters list"]
+      ? parseInt(upload.data["Total ASD voters in the ASD voters list"])
+      : null,
+    totalAsdVotesCast: upload.data[
+      "Total persons who cast their vote from the ASD voters list"
+    ]
+      ? parseInt(
+          upload.data[
+            "Total persons who cast their vote from the ASD voters list"
+          ]
+        )
+      : null,
     violencePollInterruption:
       upload.data[
         "Any incident of violence or poll interruption due to any reason (Y/N)"

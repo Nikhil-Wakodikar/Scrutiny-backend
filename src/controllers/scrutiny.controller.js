@@ -108,9 +108,9 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
   }
 
   console.log("upload ==> ", upload);
-
+  let obj;
   try {
-    let obj = {
+    obj = {
       numberOfConstituency: upload.data["Assembly Constituency Number"]
         ? parseInt(upload.data["Assembly Constituency Number"])
         : null,
@@ -266,6 +266,8 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
           "Any complaints received with respect to polling station (Y/N)"
         ],
       recommendataionOfRepoll: null,
+      countOfVotesFromEDC: null,
+      complaintAboutEVM: false,
     };
   } catch (e) {
     throw new ApiError(

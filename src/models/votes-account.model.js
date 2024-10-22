@@ -19,21 +19,27 @@ const votesAccount = mongoose.Schema(
     countOfRegistorForVoters: { type: Number },
     countOfNotToVote: { type: Number },
     countOfNotAllowedToVote: { type: Number },
-    countOfVotesToDeduct: { type: Number },
-    testVotesCast: {
-      srNo: { type: Number },
-      nameOfCandidate: { type: String },
-      numberOfVotes: { type: Number },
+    countOfVotesToDeduct: {
+      numberOftestVotesCast: {
+        totalNumber: { type: Number },
+        srNoOfelectors: { type: Number },
+      },
+      candidateForTestVoteCast: {
+        srNo: { type: Number },
+        nameOfCandidate: { type: String },
+        numberOfVotes: { type: Number },
+      },
     },
     countOfVotesRecordedAsVotingMachine: { type: Number },
     discrepancyNotice: { type: Boolean },
-    countOfVoterUsedTenderedBallotPapers: { type: Number },
-    vallotPapers: {
+    numberOfVoterUsedTenderedBallotPapers: { type: Number },
+
+    countOfBalllotPapers: {
       receivedForUse: { type: Number },
       issuedToElectors: { type: Number },
-      unUsedAndReturned: { type: Number },
+      unusedAndReturned: { type: Number },
     },
-    accountOfPapersSealsIssued: {
+    accountOfPapersSealsSuppliedForUse: {
       count: { type: Number },
       from: { type: Number },
       to: { type: Number },

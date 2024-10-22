@@ -7,6 +7,7 @@ dotenv.config({ path: path.join(__dirname, "../../.env") });
 const envVarsSchema = Joi.object()
   .keys({
     NODE_ENV: Joi.string()
+      .default("development")
       .valid("production", "development", "test")
       .required(),
     PORT: Joi.number().default(3000),
@@ -28,9 +29,6 @@ const envVarsSchema = Joi.object()
     EMAIL_FROM: Joi.string().description(
       "the from field in the emails sent by the app"
     ),
-    STORAGE_PROVIDER_URL: Joi.string().description(
-      "files can be accessed with this url"
-    ),
   })
   .unknown();
 
@@ -39,6 +37,7 @@ const { value: envVars, error } = envVarsSchema
   .validate(process.env);
 
 if (error) {
+  console.log(error);
   throw new Error(`Config validation error: ${error.message}`);
 }
 

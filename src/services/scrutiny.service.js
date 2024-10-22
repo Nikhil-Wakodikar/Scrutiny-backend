@@ -48,8 +48,8 @@ const getScrutinyById = async (id) => {
 const updateScrutinyById = async (scrutinyId, updateBody) => {
   const scrutiny = await getScrutinyById(scrutinyId);
   Object.assign(scrutiny, updateBody);
-  await Scrutiny.save();
-  return Scrutiny;
+  await scrutiny.save();
+  return scrutiny;
 };
 
 /**

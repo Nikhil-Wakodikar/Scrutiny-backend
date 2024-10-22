@@ -44,7 +44,8 @@ const scrutinySchema = new Schema(
     totalAsdVotesCast: { type: Number, default: null },
     violencePollInterruption: { type: Boolean, default: false },
     complaintsReceived: { type: Boolean, default: null },
-    recommendataionOfRepoll: { type: Boolean, default: false },
+    countOfVotesFromEDC: { type: Number, default: null },
+    complaintAboutEVM: { type: Boolean, default: false },
     reasonForRepoll: { type: String, default: null }, // Added conditionally
     reasonForPollInterruption: { type: String, default: null }, // Added conditionally
   },

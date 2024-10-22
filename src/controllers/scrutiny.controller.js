@@ -74,12 +74,12 @@ const getScrutiny = catchAsync(async (req, res) => {
 });
 
 const updateScrutiny = catchAsync(async (req, res) => {
-  let scrutiny = await scrutinyService.getScrutinyById(req.params.pollId);
+  let scrutiny = await scrutinyService.getScrutinyById(req.params.scrutinyId);
   if (!scrutiny) {
     throw new ApiError(httpStatus.NOT_FOUND, "Scrunity not found");
   }
   scrutiny = await scrutinyService.updateScrutinyById(
-    req.params.pollId,
+    req.params.scrutinyId,
     req.body
   );
   res.send(scrutiny);

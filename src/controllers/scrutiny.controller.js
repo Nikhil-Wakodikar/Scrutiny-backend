@@ -100,12 +100,14 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
   }
   const upload = await fileService.save(req.file);
 
-  if (!upload || !upload.data) {
+  if (!upload) {
     throw new ApiError(
       httpStatus.SERVICE_UNAVAILABLE,
       upload.code || `Something went wrong !!`
     );
   }
+
+  console.log("upload ==> ", upload);
 
   let obj = {
     numberOfConstituency: upload.data["Assembly Constituency Number"]

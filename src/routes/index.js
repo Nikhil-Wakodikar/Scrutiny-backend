@@ -3,6 +3,7 @@ const authRoute = require("./auth.route");
 const userRoute = require("./user.route");
 const docsRoute = require("./docs.route");
 const scrutinyRoute = require("./scrutiny.route");
+const VotesAccountRoute = require("./votes-account.route");
 const config = require("../config/config");
 
 const router = express.Router();
@@ -20,6 +21,10 @@ const defaultRoutes = [
   {
     path: "/scrutiny", //base path for scrutiny route
     route: scrutinyRoute,
+  },
+  {
+    path: "/votes-account", //base path for votes-account route
+    route: VotesAccountRoute,
   },
 ];
 

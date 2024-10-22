@@ -109,161 +109,170 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
 
   console.log("upload ==> ", upload);
 
-  let obj = {
-    numberOfConstituency: upload.data["Assembly Constituency Number"]
-      ? parseInt(upload.data["Assembly Constituency Number"])
-      : null,
-    nameOfConstituency: upload.data["Assembly Constituency Name"],
+  try {
+    let obj = {
+      numberOfConstituency: upload.data["Assembly Constituency Number"]
+        ? parseInt(upload.data["Assembly Constituency Number"])
+        : null,
+      nameOfConstituency: upload.data["Assembly Constituency Name"],
 
-    numberOfPollingStation: upload.data["Polling Station Number"]
-      ? parseInt(upload.data["Polling Station Number"])
-      : null,
-    nameOfPollingStation: upload.data["Polling Station Name"],
+      numberOfPollingStation: upload.data["Polling Station Number"]
+        ? parseInt(upload.data["Polling Station Number"])
+        : null,
+      nameOfPollingStation: upload.data["Polling Station Name"],
 
-    totalElectors: {
-      male: upload.data["Total Electors in the PS"]
-        ? upload.data["Total Electors in the PS"]["Male"]
-          ? parseInt(upload.data["Total Electors in the PS"]["Male"])
+      totalElectors: {
+        male: upload.data["Total Electors in the PS"]
+          ? upload.data["Total Electors in the PS"]["Male"]
+            ? parseInt(upload.data["Total Electors in the PS"]["Male"])
+            : null
+          : null,
+        female: upload.data["Total Electors in the PS"]
+          ? upload.data["Total Electors in the PS"]["Female"]
+            ? parseInt(upload.data["Total Electors in the PS"]["Female"])
+            : null
+          : null,
+        tg: upload.data["Total Electors in the PS"]
+          ? upload.data["Total Electors in the PS"]["TG"]
+            ? parseInt(upload.data["Total Electors in the PS"]["TG"])
+            : null
+          : null,
+        total: upload.data["Total Electors in the PS"]
+          ? upload.data["Total Electors in the PS"]["Total"]
+            ? parseInt(upload.data["Total Electors in the PS"]["Total"])
+            : null
+          : null,
+      },
+      personsVoted: {
+        male: upload.data["Total persons voted in PS"]
+          ? upload.data["Total persons voted in PS"]["Male"]
+            ? parseInt(upload.data["Total persons voted in PS"]["Male"])
+            : null
+          : null,
+        female: upload.data["Total persons voted in PS"]
+          ? upload.data["Total persons voted in PS"]["Female"]
+            ? parseInt(upload.data["Total persons voted in PS"]["Female"])
+            : null
+          : null,
+        tg: upload.data["Total persons voted in PS"]
+          ? upload.data["Total persons voted in PS"]["TG"]
+            ? parseInt(upload.data["Total persons voted in PS"]["TG"])
+            : null
+          : null,
+        total: upload.data["Total persons voted in PS"]
+          ? upload.data["Total persons voted in PS"]["Total"]
+            ? parseInt(upload.data["Total persons voted in PS"]["Total"])
+            : null
+          : null,
+      },
+      tenderedVotes: upload.data["Number of Tendered votes"]
+        ? upload.data["Number of Tendered votes"]
+          ? parseInt(upload.data["Number of Tendered votes"])
           : null
         : null,
-      female: upload.data["Total Electors in the PS"]
-        ? upload.data["Total Electors in the PS"]["Female"]
-          ? parseInt(upload.data["Total Electors in the PS"]["Female"])
+      challengedVotes: upload.data["Number of challenged votes"]
+        ? upload.data["Number of challenged votes"]
+          ? parseInt(upload.data["Number of challenged votes"])
           : null
         : null,
-      tg: upload.data["Total Electors in the PS"]
-        ? upload.data["Total Electors in the PS"]["TG"]
-          ? parseInt(upload.data["Total Electors in the PS"]["TG"])
+      proxyVotesByCSVs: upload.data["Number of Proxy votes by CSVs"]
+        ? upload.data["Number of Proxy votes by CSVs"]
+          ? parseInt(upload.data["Number of Proxy votes by CSVs"])
           : null
         : null,
-      total: upload.data["Total Electors in the PS"]
-        ? upload.data["Total Electors in the PS"]["Total"]
-          ? parseInt(upload.data["Total Electors in the PS"]["Total"])
-          : null
+      votersEPIC: upload.data[
+        "Number of electors who exercised their right of vote on the basis of EPIC"
+      ]
+        ? parseInt(
+            upload.data[
+              "Number of electors who exercised their right of vote on the basis of EPIC"
+            ]
+          )
         : null,
-    },
-    personsVoted: {
-      male: upload.data["Total persons voted in PS"]
-        ? upload.data["Total persons voted in PS"]["Male"]
-          ? parseInt(upload.data["Total persons voted in PS"]["Male"])
-          : null
+      votersAlternativeDocument: upload.data[
+        "Number of electors who exercised their right of vote on the basis alternative document"
+      ]
+        ? parseInt(
+            upload.data[
+              "Number of electors who exercised their right of vote on the basis alternative document"
+            ]
+          )
         : null,
-      female: upload.data["Total persons voted in PS"]
-        ? upload.data["Total persons voted in PS"]["Female"]
-          ? parseInt(upload.data["Total persons voted in PS"]["Female"])
-          : null
+      votersRule49O: upload.data[
+        "Total voters who exercised their right under Rule 49 O, who decided not to record vote"
+      ]
+        ? parseInt(
+            upload.data[
+              "Total voters who exercised their right under Rule 49 O, who decided not to record vote"
+            ]
+          )
         : null,
-      tg: upload.data["Total persons voted in PS"]
-        ? upload.data["Total persons voted in PS"]["TG"]
-          ? parseInt(upload.data["Total persons voted in PS"]["TG"])
-          : null
+      pollingAgents: upload.data[
+        "Number of polling agents in the polling station"
+      ]
+        ? parseInt(
+            upload.data["Number of polling agents in the polling station"]
+          )
         : null,
-      total: upload.data["Total persons voted in PS"]
-        ? upload.data["Total persons voted in PS"]["Total"]
-          ? parseInt(upload.data["Total persons voted in PS"]["Total"])
-          : null
+      overseasElectors: upload.data[
+        "Number of overseas electors who voted in the poll"
+      ]
+        ? parseInt(
+            upload.data["Number of overseas electors who voted in the poll"]
+          )
         : null,
-    },
-    tenderedVotes: upload.data["Number of Tendered votes"]
-      ? upload.data["Number of Tendered votes"]
-        ? parseInt(upload.data["Number of Tendered votes"])
-        : null
-      : null,
-    challengedVotes: upload.data["Number of challenged votes"]
-      ? upload.data["Number of challenged votes"]
-        ? parseInt(upload.data["Number of challenged votes"])
-        : null
-      : null,
-    proxyVotesByCSVs: upload.data["Number of Proxy votes by CSVs"]
-      ? upload.data["Number of Proxy votes by CSVs"]
-        ? parseInt(upload.data["Number of Proxy votes by CSVs"])
-        : null
-      : null,
-    votersEPIC: upload.data[
-      "Number of electors who exercised their right of vote on the basis of EPIC"
-    ]
-      ? parseInt(
-          upload.data[
-            "Number of electors who exercised their right of vote on the basis of EPIC"
-          ]
-        )
-      : null,
-    votersAlternativeDocument: upload.data[
-      "Number of electors who exercised their right of vote on the basis alternative document"
-    ]
-      ? parseInt(
-          upload.data[
-            "Number of electors who exercised their right of vote on the basis alternative document"
-          ]
-        )
-      : null,
-    votersRule49O: upload.data[
-      "Total voters who exercised their right under Rule 49 O, who decided not to record vote"
-    ]
-      ? parseInt(
-          upload.data[
-            "Total voters who exercised their right under Rule 49 O, who decided not to record vote"
-          ]
-        )
-      : null,
-    pollingAgents: upload.data[
-      "Number of polling agents in the polling station"
-    ]
-      ? parseInt(upload.data["Number of polling agents in the polling station"])
-      : null,
-    overseasElectors: upload.data[
-      "Number of overseas electors who voted in the poll"
-    ]
-      ? parseInt(
-          upload.data["Number of overseas electors who voted in the poll"]
-        )
-      : null,
-    buCuVvpatUsed: {
-      ballotUnit: upload.data["Number of units used"]
-        ? upload.data["Number of units used"]["BU"]
-          ? parseInt(upload.data["Number of units used"]["BU"])
-          : null
+      buCuVvpatUsed: {
+        ballotUnit: upload.data["Number of units used"]
+          ? upload.data["Number of units used"]["BU"]
+            ? parseInt(upload.data["Number of units used"]["BU"])
+            : null
+          : null,
+        controlUnit: upload.data["Number of units used"]
+          ? upload.data["Number of units used"]["CU"]
+            ? parseInt(upload.data["Number of units used"]["CU"])
+            : null
+          : null,
+        vvpat: upload.data["Number of units used"]
+          ? upload.data["Number of units used"]["VVPAT"]
+            ? parseInt(upload.data["Number of units used"]["VVPAT"])
+            : null
+          : null,
+      },
+      buCuVvpatChanged: {
+        ballotUnit: null,
+        controlUnit: null,
+        vvpat: null,
+      },
+      changeTimeReason:
+        upload.data["If so, the time when changed and reason for it"],
+      totalAsdVoters: upload.data["Total ASD voters in the ASD voters list"]
+        ? parseInt(upload.data["Total ASD voters in the ASD voters list"])
         : null,
-      controlUnit: upload.data["Number of units used"]
-        ? upload.data["Number of units used"]["CU"]
-          ? parseInt(upload.data["Number of units used"]["CU"])
-          : null
+      totalAsdVotesCast: upload.data[
+        "Total persons who cast their vote from the ASD voters list"
+      ]
+        ? parseInt(
+            upload.data[
+              "Total persons who cast their vote from the ASD voters list"
+            ]
+          )
         : null,
-      vvpat: upload.data["Number of units used"]
-        ? upload.data["Number of units used"]["VVPAT"]
-          ? parseInt(upload.data["Number of units used"]["VVPAT"])
-          : null
-        : null,
-    },
-    buCuVvpatChanged: {
-      ballotUnit: null,
-      controlUnit: null,
-      vvpat: null,
-    },
-    changeTimeReason:
-      upload.data["If so, the time when changed and reason for it"],
-    totalAsdVoters: upload.data["Total ASD voters in the ASD voters list"]
-      ? parseInt(upload.data["Total ASD voters in the ASD voters list"])
-      : null,
-    totalAsdVotesCast: upload.data[
-      "Total persons who cast their vote from the ASD voters list"
-    ]
-      ? parseInt(
-          upload.data[
-            "Total persons who cast their vote from the ASD voters list"
-          ]
-        )
-      : null,
-    violencePollInterruption:
-      upload.data[
-        "Any incident of violence or poll interruption due to any reason (Y/N)"
-      ],
-    complaintsReceived:
-      upload.data[
-        "Any complaints received with respect to polling station (Y/N)"
-      ],
-    recommendataionOfRepoll: null,
-  };
+      violencePollInterruption:
+        upload.data[
+          "Any incident of violence or poll interruption due to any reason (Y/N)"
+        ],
+      complaintsReceived:
+        upload.data[
+          "Any complaints received with respect to polling station (Y/N)"
+        ],
+      recommendataionOfRepoll: null,
+    };
+  } catch (e) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Cannot extract properties"
+    );
+  }
   res.send(obj);
 });
 

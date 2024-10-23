@@ -316,8 +316,8 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
           ? parseInt(upload.data["मतदान केंद्रात मतदान केलेल्या एकूण"])
           : null,
       },
-      tenderedVotes: upload.data["प्रदन मतांची संख्या"]
-        ? parseInt(upload.data["प्रदन मतांची संख्या"])
+      tenderedVotes: upload.data["प्रदान मतांची संख्या"]
+        ? parseInt(upload.data["प्रदान मतांची संख्या"])
         : null,
       challengedVotes: upload.data["आक्षेपित मतांची संख्या"]
         ? upload.data["आक्षेपित मतांची संख्या"]

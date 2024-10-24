@@ -281,13 +281,17 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
       numberOfConstituency: upload.data["विधानसभा मतदार संघाचे नंबर"]
         ? parseInt(upload.data["विधानसभा मतदार संघाचे नंबर"])
         : null,
-      nameOfConstituency: upload.data["विधानसभा मतदार संघाचे नाव"],
+      nameOfConstituency: upload.data.hasOwnProperty(
+        "विधानसभा मतदार संघाचे नाव"
+      )
+        ? upload.data["विधानसभा मतदार संघाचे नाव"]
+        : null,
 
       numberOfPollingStation: upload.data["मतदान केंद्राचे क्रमांक"]
         ? parseInt(upload.data["मतदान केंद्राचे क्रमांक"])
         : null,
       nameOfPollingStation: upload.data.hasOwnProperty("मतदान केंद्राचे नाव")
-        ? upload.data("मतदान केंद्राचे नाव")
+        ? upload.data["मतदान केंद्राचे नाव"]
         : null,
 
       totalElectors: {

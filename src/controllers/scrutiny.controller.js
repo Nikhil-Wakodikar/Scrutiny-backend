@@ -311,6 +311,12 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
                 "मतदान केंद्रात मतदान केलेल्या पुरुष व्यक्तींची संख्या"
               ]
             )
+          : upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या पुरुष"]
+          ? parseInt(
+              upload.data[
+                "मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या पुरुष"
+              ]
+            )
           : null,
         female: upload.data["मतदान केंद्रात मतदान केलेल्या महिला"]
           ? parseInt(upload.data["मतदान केंद्रात मतदान केलेल्या महिला"])
@@ -318,6 +324,12 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
           ? parseInt(
               upload.data[
                 "मतदान केंद्रात मतदान केलेल्या महिला व्यक्तींची संख्या"
+              ]
+            )
+          : upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या महिला"]
+          ? parseInt(
+              upload.data[
+                "मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या महिला"
               ]
             )
           : null,
@@ -332,6 +344,14 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
                 "मतदान केंद्रात मतदान केलेल्या तृतीय पंथी व्यक्तींची संख्या"
               ]
             )
+          : upload.data[
+              "मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या तृतीय पंथी"
+            ]
+          ? parseInt(
+              upload.data[
+                "मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या तृतीय पंथी"
+              ]
+            )
           : null,
 
         total: upload.data["मतदान केंद्रात मतदान केलेल्या एकूण"]
@@ -342,8 +362,15 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
                 "मतदान केंद्रात मतदान केलेल्या एकूण व्यक्तींची संख्या"
               ]
             )
+          : upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या एकूण"]
+          ? parseInt(
+              upload.data[
+                "मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या एकूण"
+              ]
+            )
           : null,
       },
+
       tenderedVotes: upload.data["प्रदान मतांची संख्या"]
         ? parseInt(upload.data["प्रदान मतांची संख्या"])
         : null,

@@ -449,24 +449,12 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
           : null,
       },
       buCuVvpatChanged: {
-        ballotUnit: upload.data.hasOwnProperty(
-          "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) BU"
-        )
-          ? upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) BU"]
-          : null,
-
-        controlUnit: upload.data.hasOwnProperty(
-          "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) CU"
-        )
-          ? upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) CU"]
-          : null,
-        vvpat: upload.data.hasOwnProperty(
-          "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) VVPAT"
-        )
-          ? upload.data[
-              "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) VVPAT"
-            ]
-          : null,
+        ballotUnit:
+          upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) BU"],
+        controlUnit:
+          upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) CU"],
+        vvpat:
+          upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) VVPAT"],
       },
       changeTimeReason:
         upload.data[

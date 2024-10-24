@@ -449,11 +449,11 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
           : null,
       },
       buCuVvpatChanged: {
-        ballotUnit:
+        isBallotUnit:
           upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) BU"],
-        controlUnit:
+        isControlUnit:
           upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) CU"],
-        vvpat:
+        isVvpat:
           upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) VVPAT"],
       },
       changeTimeReason:

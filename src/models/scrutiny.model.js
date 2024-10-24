@@ -35,9 +35,9 @@ const scrutinySchema = new Schema(
     },
 
     buCuVvpatChanged: {
-      ballotUnit: { type: Boolean, default: null },
-      controlUnit: { type: Boolean, default: null },
-      vvpat: { type: Boolean, default: null },
+      isBallotUnit: { type: Boolean, default: null },
+      isControlUnit: { type: Boolean, default: null },
+      isVvpat: { type: Boolean, default: null },
     },
     changeTimeReason: { type: String, default: null },
     totalAsdVoters: { type: Number, default: null },

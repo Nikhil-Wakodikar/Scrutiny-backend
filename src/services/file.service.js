@@ -5,6 +5,49 @@ const ApiError = require("../utils/ApiError");
 const httpStatus = require("http-status");
 const fs = require("fs");
 const FormData = require("form-data");
+const { Storage } = require("@google-cloud/storage");
+
+const storage = new Storage({
+  keyFilename: "src/qualified-cacao-317706-cb03af6e035c.json",
+});
+
+const bucketName = "image_bucket_tempp";
+const bucket = storage.bucket(bucketName);
+
+// Sending the upload request
+const upload = async (file) => {
+  let url;
+  bucket.upload(
+    file.path,
+    {
+      destination: `prashasan/${file.filename}`,
+    },
+    function (err, file) {
+      if (err) {
+        console.error(`Error uploading image image_to_upload.jpeg: ${err}`);
+        throw new ApiError(
+          httpStatus.SERVICE_UNAVAILABLE,
+          "something went wrong"
+        );
+      } else {
+        console.log(`Image uploaded to ${bucketName}/prashasan.`);
+      }
+      const directory = "temp";
+      const fileToKeep = ".gitkeep";
+      fs.readdir(directory, (err, files) => {
+        if (err) throw err;
+        const filesToDelete = files.filter((file) => file !== fileToKeep);
+        for (const file of filesToDelete) {
+          fs.unlinkSync(`${directory}/${file}`, (err) => {
+            if (err) throw err;
+          });
+        }
+      });
+    }
+  );
+  url = `${config.storageServiceProvider}/${bucketName}/prashasan/${file.filename}`;
+  return url;
+};
 
 /**
  * Save a file
@@ -57,4 +100,4 @@ const deleteLocal = async (path) => {
   return;
 };
 
-module.exports = { deleteLocal, save };
+module.exports = { deleteLocal, save, upload };

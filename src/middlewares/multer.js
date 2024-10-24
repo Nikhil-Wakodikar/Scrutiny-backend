@@ -7,7 +7,7 @@ let fileName = "";
 //set destination
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, "temp");
+    cb(null, path.join(__dirname, "../../assets"));
   },
   filename: (req, file, cb) => {
     fileName = Date.now() + file.originalname;

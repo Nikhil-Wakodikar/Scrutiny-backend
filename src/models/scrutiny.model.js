@@ -48,6 +48,7 @@ const scrutinySchema = new Schema(
     complaintAboutEVM: { type: Boolean, default: false },
     reasonForRepoll: { type: String, default: null }, // Added conditionally
     reasonForPollInterruption: { type: String, default: null }, // Added conditionally
+    fileUrl: { type: String, default: null },
   },
   { timestamps: true }
 );

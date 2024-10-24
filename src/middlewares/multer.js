@@ -10,7 +10,7 @@ const storage = multer.diskStorage({
     cb(null, "temp");
   },
   filename: (req, file, cb) => {
-    fileName = file.originalname;
+    fileName = Date.now() + file.originalname;
     req.body["file"] = fileName;
     cb(null, fileName);
   },
@@ -29,7 +29,7 @@ const upload = multer({
     } catch (err) {
       throw new ApiError(
         httpStatus.NOT_MODIFIED,
-        "Profile Picture not uploded"
+        "Error while uploading file!"
       );
     }
   },

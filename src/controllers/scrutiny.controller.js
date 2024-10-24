@@ -388,9 +388,24 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
           : null,
       },
       buCuVvpatChanged: {
-        ballotUnit: null,
-        controlUnit: null,
-        vvpat: null,
+        ballotUnit: upload.data.hasOwnProperty(
+          "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) BU"
+        )
+          ? upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) BU"]
+          : null,
+
+        controlUnit: upload.data.hasOwnProperty(
+          "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) CU"
+        )
+          ? upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) CU"]
+          : null,
+        vvpat: upload.data.hasOwnProperty(
+          "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) VVPAT"
+        )
+          ? upload.data[
+              "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) VVPAT"
+            ]
+          : null,
       },
       changeTimeReason:
         upload.data[
@@ -426,12 +441,10 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
       countOfVotesFromEDC: upload.data["EDC द्वारे झालेले मतदान"]
         ? parseInt(upload.data["EDC द्वारे झालेले मतदान"])
         : null,
-      complaintAboutEVM: upload.data[
+      complaintAboutEVM: upload.data.hasOwnProperty(
         "EVM बाबत गंभीर तक्रार प्राप्त झालेली होती का (Y/N)"
-      ]
-        ? parseInt(
-            upload.data["EVM बाबत गंभीर तक्रार प्राप्त झालेली होती का (Y/N)"]
-          )
+      )
+        ? upload.data["EVM बाबत गंभीर तक्रार प्राप्त झालेली होती का (Y/N)"]
         : null,
     };
   } catch (e) {

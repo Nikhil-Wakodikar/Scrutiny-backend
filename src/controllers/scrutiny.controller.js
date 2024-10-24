@@ -286,7 +286,9 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
       numberOfPollingStation: upload.data["मतदान केंद्राचे क्रमांक"]
         ? parseInt(upload.data["मतदान केंद्राचे क्रमांक"])
         : null,
-      nameOfPollingStation: upload.data["मतदान केंद्राचे नाव"],
+      nameOfPollingStation: upload.data.hasOwnProperty("मतदान केंद्राचे नाव")
+        ? upload.data("मतदान केंद्राचे नाव")
+        : null,
 
       totalElectors: {
         male: upload.data["एकूण मतदारांची संख्या पुरुष"]

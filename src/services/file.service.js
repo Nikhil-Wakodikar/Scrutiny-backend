@@ -123,11 +123,21 @@ async function uploadFile(file) {
       },
     });
 
-    console.log(`File uploaded: ${response.data.selfLink}`);
-    await deleteLocal(file.path);
-    return response.data.selfLink;
+    console.log(`File uploaded: ${response.data.name}`);
+    return;
   } catch (error) {
-    console.error("Error uploading file:", error.response.data);
+    console.error("Error uploading file:", error.response);
+    const directory = "temp";
+    const fileToKeep = ".gitkeep";
+    fs.readdir(directory, (err, files) => {
+      if (err) throw err;
+      const filesToDelete = files.filter((file) => file !== fileToKeep);
+      for (const file of filesToDelete) {
+        fs.unlinkSync(`${directory}/${file}`, (err) => {
+          if (err) throw err;
+        });
+      }
+    });
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
       "Bucket upload failed"

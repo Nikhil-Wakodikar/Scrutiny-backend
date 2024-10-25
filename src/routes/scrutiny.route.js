@@ -14,7 +14,7 @@ router
     scrutinyController.getScrutinys
   )
   .post(
-    validate(scrutinyValidation.createScrutiny),
+    [upload.single("file"), validate(scrutinyValidation.createScrutiny)],
     scrutinyController.createScrutiny
   );
 

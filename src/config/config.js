@@ -73,4 +73,6 @@ module.exports = {
     from: envVars.EMAIL_FROM,
   },
   dataExtrationServiceProvider: envVars.DATA_EXTRACTION_SERVICE_PROVIDER,
+  storageServiceProvider: envVars.STORAGE_SERVICE_PROVIDER,
+  storageAccess: envVars.STORAGE_ACCESS,
 };

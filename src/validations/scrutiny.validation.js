@@ -10,7 +10,7 @@ const getScrutinys = {
     sortBy: Joi.string(),
     limit: Joi.number().integer(),
     page: Joi.number().integer(),
-    tenderedVotes: Joi.boolean(),
+    tenderedVotes: Joi.number().integer(),
     votersUsedAlternateDoc: Joi.boolean(),
   }),
 };

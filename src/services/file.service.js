@@ -9,7 +9,7 @@ const { Storage } = require("@google-cloud/storage");
 
 const storage = new Storage({
   projectId: "qualified-cacao-317706",
-  keyFilename: "src/qualified-cacao-317706-158d55e89acd.json",
+  keyFilename: "src/qualified-cacao-317706-1c7ed8448725.json",
 });
 
 const bucketName = "image_bucket_tempp";

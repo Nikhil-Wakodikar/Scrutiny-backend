@@ -8,7 +8,8 @@ const FormData = require("form-data");
 const { Storage } = require("@google-cloud/storage");
 
 const storage = new Storage({
-  keyFilename: "src/qualified-cacao-317706-cb03af6e035c.json",
+  projectId: "qualified-cacao-317706",
+  keyFilename: "src/qualified-cacao-317706-158d55e89acd.json",
 });
 
 const bucketName = "image_bucket_tempp";
@@ -17,7 +18,7 @@ const bucket = storage.bucket(bucketName);
 // Sending the upload request
 const upload = async (file) => {
   let url;
-  bucket.upload(
+  let res = await bucket.upload(
     file.path,
     {
       destination: `prashasan/${file.filename}`,

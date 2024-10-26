@@ -1,7 +1,7 @@
 const roles = {
-  org: "org",
-  user: "user",
-  admin: "admin",
+  po: "po",
+  ro: "ro",
+  aro: "aro",
 };
 
 module.exports = {

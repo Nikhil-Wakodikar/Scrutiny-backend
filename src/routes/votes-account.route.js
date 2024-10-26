@@ -3,6 +3,7 @@ const auth = require("../middlewares/auth");
 const validate = require("../middlewares/validate");
 const { votesAccountValidation } = require("../validations");
 const { votesAccountController } = require("../controllers");
+const { imgDataUpload, uploadVotersAccount } = require("../middlewares/multer");
 
 const router = express.Router();
 
@@ -13,8 +14,18 @@ router
     votesAccountController.getVotesAccounts
   )
   .post(
-    validate(votesAccountValidation.createVotesAccount),
+    [
+      uploadVotersAccount.single("file"),
+      validate(votesAccountValidation.createVotesAccount),
+    ],
     votesAccountController.createVotesAccount
+  );
+
+router
+  .route("/get-data-by-image")
+  .post(
+    imgDataUpload.single("file"),
+    votesAccountController.getVotesAccountByImg
   );
 
 router
@@ -22,6 +33,10 @@ router
   .get(
     validate(votesAccountValidation.getVotesAccountById),
     votesAccountController.getVotesAccount
+  )
+  .put(
+    validate(votesAccountValidation.updateVotesAccount),
+    votesAccountController.updateVotesAccount
   );
 
 module.exports = router;

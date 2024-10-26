@@ -17,4 +17,11 @@ const getVotesAccountById = {
   }),
 };
 
-module.exports = { createVotesAccount, getVotesAccounts, getVotesAccountById };
+const updateVotesAccount = {};
+
+module.exports = {
+  createVotesAccount,
+  getVotesAccounts,
+  getVotesAccountById,
+  updateVotesAccount,
+};

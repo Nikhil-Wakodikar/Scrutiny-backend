@@ -8,15 +8,6 @@ const userSchema = mongoose.Schema(
   {
     givenName: {
       type: String,
-      required: true,
-      trim: true,
-    },
-    fullName: {
-      type: String,
-      trim: true,
-    },
-    orgName: {
-      type: String,
       trim: true,
     },
     email: {

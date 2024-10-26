@@ -38,7 +38,7 @@ const getVotesAccountByImg = catchAsync(async (req, res) => {
   }
   const upload = await fileService.save(req.file);
 
-  await fileService.deleteLocal(req.file);
+  // await fileService.deleteLocal(req.file);
 
   if (!upload) {
     throw new ApiError(
@@ -108,43 +108,49 @@ const getVotesAccountByImg = catchAsync(async (req, res) => {
                 ]
               )
             : null,
-          srNoOfelectors: upload.data["Polling Station Name"],
+          srNoOfelectors: upload.data["Sr. No.(s) of elector(s) in Form 17A"],
         },
         candidateForTestVoteCast: {
-          srNo: upload.data["Polling Station Name"],
-          nameOfCandidate: { type: String },
-          numberOfVotes: upload.data["Polling Station Name"],
+          srNo: null,
+          nameOfCandidate: null,
+          numberOfVotes: null,
         },
       },
-      countOfVotesRecordedAsVotingMachine: upload.data["Polling Station Name"],
-      discrepancyNotice: { type: Boolean },
+      countOfVotesRecordedAsVotingMachine:
+        upload.data["Total number of votes recorded as per voting machine"],
+      discrepancyNotice:
+        upload.data[
+          "Whether the total number of votes as shown against item 6 tallies with the total number of votes as shown against item 2 minus numbers of voters deciding not to record votes as against item 3 minus number of vote as against item 4(i.e., 2-3-4) or any discrepancy noticed"
+        ],
       numberOfVoterUsedTenderedBallotPapers:
-        upload.data["Polling Station Name"],
+        upload.data[
+          "Number of voters to whom tendered Ballot papers were issued under rule 49P"
+        ],
 
       countOfBalllotPapers: {
-        receivedForUse: upload.data["Polling Station Name"],
-        issuedToElectors: upload.data["Polling Station Name"],
-        unusedAndReturned: upload.data["Polling Station Name"],
+        receivedForUse: upload.data["Number of tendered Ballot papers"],
+        issuedToElectors: null,
+        unusedAndReturned: null,
       },
       accountOfPapersSealsSuppliedForUse: {
-        count: upload.data["Polling Station Name"],
-        from: upload.data["Polling Station Name"],
-        to: upload.data["Polling Station Name"],
+        count: null,
+        from: null,
+        to: null,
       },
       accountOfPapersSealsUsed: {
-        count: upload.data["Polling Station Name"],
-        from: upload.data["Polling Station Name"],
-        to: upload.data["Polling Station Name"],
+        count: null,
+        from: null,
+        to: null,
       },
       accountOfPapersSealsReturned: {
-        count: upload.data["Polling Station Name"],
-        from: upload.data["Polling Station Name"],
-        to: upload.data["Polling Station Name"],
+        count: null,
+        from: null,
+        to: null,
       },
       accountOfPapersSealsDamaged: {
-        count: upload.data["Polling Station Name"],
-        from: upload.data["Polling Station Name"],
-        to: upload.data["Polling Station Name"],
+        count: null,
+        from: null,
+        to: null,
       },
     };
   } catch (e) {
@@ -153,7 +159,7 @@ const getVotesAccountByImg = catchAsync(async (req, res) => {
       "Cannot extract properties"
     );
   }
-  res.send(upload);
+  res.send(obj);
 });
 
 module.exports = {

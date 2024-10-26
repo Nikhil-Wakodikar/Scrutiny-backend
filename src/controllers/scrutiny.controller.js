@@ -105,7 +105,7 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
   }
   const upload = await fileService.save(req.file);
 
-  await fileService.deleteLocal(req.file);
+  // await fileService.deleteLocal(req.file);
 
   if (!upload) {
     throw new ApiError(

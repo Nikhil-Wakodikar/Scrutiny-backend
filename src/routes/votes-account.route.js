@@ -3,7 +3,7 @@ const auth = require("../middlewares/auth");
 const validate = require("../middlewares/validate");
 const { votesAccountValidation } = require("../validations");
 const { votesAccountController } = require("../controllers");
-const { upload } = require("../middlewares/multer");
+const { imgDataUpload } = require("../middlewares/multer");
 
 const router = express.Router();
 
@@ -20,7 +20,10 @@ router
 
 router
   .route("/get-data-by-image")
-  .post(upload.single("file"), votesAccountController.getVotesAccountByImg);
+  .post(
+    imgDataUpload.single("file"),
+    votesAccountController.getVotesAccountByImg
+  );
 
 router
   .route("/:votesAccountId")

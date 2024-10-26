@@ -16,7 +16,7 @@ const storage = multer.diskStorage({
   },
 });
 //upload file
-const upload = multer({
+const uploadScrutiny = multer({
   storage: storage,
   fileFilter: (req, file, cb) => {
     try {
@@ -35,21 +35,19 @@ const upload = multer({
   },
 });
 
-//set destination
-const storage2 = multer.diskStorage({
+const imgDataStorage = multer.diskStorage({
   destination: (req, file, cb) => {
-    cb(null, path.join(__dirname, "../../assets/storyIMG"));
+    cb(null, path.join("temp"));
   },
   filename: (req, file, cb) => {
-    fileName = Date.now() + file.originalname;
-    req.body["storyImg"] = fileName;
+    fileName = Date.now() + "." + file.originalname.split(".").pop();
+    req.body["file"] = fileName;
     cb(null, fileName);
   },
 });
 
-//upload file
-const upload2 = multer({
-  storage: storage2,
+const imgDataUpload = multer({
+  storage: imgDataStorage,
   fileFilter: (req, file, cb) => {
     try {
       let ExtArr = ["image/jpeg", "image/jpg", "image/png"];
@@ -61,10 +59,10 @@ const upload2 = multer({
     } catch (err) {
       throw new ApiError(
         httpStatus.NOT_MODIFIED,
-        "Profile Picture not uploded"
+        "Error while uploading file!"
       );
     }
   },
 });
 
-module.exports = { upload, upload2 };
+module.exports = { uploadScrutiny, imgDataUpload };

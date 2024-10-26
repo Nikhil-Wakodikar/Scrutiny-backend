@@ -20,10 +20,7 @@ router
 router
   .route("/:userId")
   .get(validate(userValidation.getUser), userController.getUser)
-  .patch(
-    [upload.single("profileImg"), validate(userValidation.updateUser)],
-    userController.updateUser
-  )
+  .patch(validate(userValidation.updateUser), userController.updateUser)
   .delete(validate(userValidation.deleteUser), userController.deleteUser);
 
 // Routes: add story to saved

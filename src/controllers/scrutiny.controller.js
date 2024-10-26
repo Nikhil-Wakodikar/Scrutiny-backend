@@ -7,7 +7,7 @@ const { scrutinyService, fileService } = require("../services");
 const createScrutiny = catchAsync(async (req, res) => {
   let fileUrl = null;
   if (req.file) {
-    fileUrl = await fileService.uploadFile(req.file);
+    fileUrl = "assets/scrutiny/" + req.file.filename;
   }
   const scrunity = await scrutinyService.createScrutiny({
     ...req.body,

@@ -59,6 +59,7 @@ const votesAccount = mongoose.Schema(
       from: { type: Number },
       to: { type: Number },
     },
+    fileUrl: { type: String },
   },
   {
     timestamps: true,

@@ -38,4 +38,23 @@ const getVotesAccountById = async (id) => {
   return VotesAccount.findById(id);
 };
 
-module.exports = { createVotesAccount, queryVotesAccount, getVotesAccountById };
+/**
+ * Update scrutiny by id
+ * @param {ObjectId} votesAccountId
+ * @param {Object} updateBody
+ * @returns {Promise<VotesAccount>}
+ */
+
+const updateVotesAccountById = async (votesAccountId, updateBody) => {
+  const votesAccount = await getVotesAccountById(votesAccountId);
+  Object.assign(votesAccount, updateBody);
+  await votesAccount.save();
+  return votesAccount;
+};
+
+module.exports = {
+  createVotesAccount,
+  queryVotesAccount,
+  getVotesAccountById,
+  updateVotesAccountById,
+};

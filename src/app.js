@@ -46,14 +46,13 @@ app.options("*", cors());
 
 //static for image
 //For sending files to client
-const folderList = ["scrutiny", "votesAccount"];
+const folderList = ["scrutiny", "votes-account"];
 
 folderList.map((fname) => {
   app.use(
     `/assets/${fname}`,
     express.static(path.join(__dirname, `/assets/${fname}`))
   );
-  console.log(__dirname);
 });
 
 // Initialize jwt authentication

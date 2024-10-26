@@ -5,8 +5,13 @@ const catchAsync = require("../utils/catchAsync");
 const { votesAccountService, fileService } = require("../services");
 
 const createVotesAccount = catchAsync(async (req, res) => {
+  let fileUrl = null;
+  if (req.file) {
+    fileUrl = "assets/votes-account/" + req.file.filename;
+  }
   const votesAccount = await votesAccountService.createVotesAccount({
     ...req.body,
+    fileUrl,
   });
   res.status(httpStatus.CREATED).send(votesAccount);
 });
@@ -29,6 +34,20 @@ const getVotesAccount = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.NOT_FOUND, "Record not found");
   }
 
+  res.send(votesAccount);
+});
+
+const updateVotesAccount = catchAsync(async (req, res) => {
+  let votesAccount = await votesAccountService.getVotesAccountById(
+    req.params.votesAccountId
+  );
+  if (!votesAccount) {
+    throw new ApiError(httpStatus.NOT_FOUND, "Votes Account not found");
+  }
+  votesAccount = await votesAccountService.updateVotesAccountById(
+    req.params.votesAccountId,
+    req.body
+  );
   res.send(votesAccount);
 });
 
@@ -167,4 +186,5 @@ module.exports = {
   getVotesAccounts,
   getVotesAccount,
   getVotesAccountByImg,
+  updateVotesAccount,
 };

@@ -71,7 +71,15 @@ const getVotesAccountByImg = catchAsync(async (req, res) => {
 
   try {
     obj = {
-      numberOfConstituency: { type: Number },
+      numberOfConstituency: upload.data[
+        "Election to House of the People/Legislative Assembly of the State/Union Territory"
+      ]
+        ? parseInt(
+            upload.data[
+              "Election to House of the People/Legislative Assembly of the State/Union Territory"
+            ]
+          )
+        : null,
       nameOfConstituency: upload.data["From Assembly Constituency"],
       numberOfPollingStation: upload.data["Polling Station Number"]
         ? parseInt(upload.data["Polling Station Number"])

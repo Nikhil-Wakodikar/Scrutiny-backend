@@ -155,27 +155,27 @@ const getVotesAccountByImg = catchAsync(async (req, res) => {
         ],
 
       countOfBalllotPapers: {
-        receivedForUse: upload.data["Number of tendered Ballot papers"],
-        issuedToElectors: null,
-        unusedAndReturned: null,
+        receivedForUse: upload.data["(a) recieved for use"],
+        issuedToElectors: upload.data["(b) issued to electors"],
+        unusedAndReturned: upload.data["(c) not used and returned"],
       },
       accountOfPapersSealsSuppliedForUse: {
-        count: null,
+        count: upload.data["1 paper seals supplied for use: Total No"],
         from: null,
         to: null,
       },
       accountOfPapersSealsUsed: {
-        count: null,
+        count: upload.data["2 Paper seals used: Total No"],
         from: null,
         to: null,
       },
       accountOfPapersSealsReturned: {
-        count: null,
+        count: upload.data["3 Unused paper seals returned to RO Total No"],
         from: null,
         to: null,
       },
       accountOfPapersSealsDamaged: {
-        count: null,
+        count: upload.data["4 Damaged paper seal, if any: Total No"],
         from: null,
         to: null,
       },

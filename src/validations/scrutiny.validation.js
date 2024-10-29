@@ -12,6 +12,7 @@ const getScrutinys = {
     page: Joi.number().integer(),
     tenderedVotes: Joi.number().integer(),
     votersUsedAlternateDoc: Joi.boolean(),
+    numberOfConstituency: Joi.number(),
   }),
 };
 

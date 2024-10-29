@@ -22,6 +22,7 @@ const getScrutinys = catchAsync(async (req, res) => {
     "complaintsReceived",
     "tenderedVotes",
     "votersUsedAlternateDoc",
+    "numberOfConstituency",
   ]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
   if (filter.tenderedVotes) {

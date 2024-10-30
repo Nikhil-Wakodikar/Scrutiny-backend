@@ -42,6 +42,7 @@ const userSchema = mongoose.Schema(
       default: roles.user,
       enum: [roles.org, roles.user, roles.admin],
     },
+    constituencyNumber: { type: Number },
   },
   {
     timestamps: true,

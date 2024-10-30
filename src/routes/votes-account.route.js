@@ -28,6 +28,15 @@ router
     votesAccountController.getVotesAccountByImg
   );
 
+router.use(auth.auth());
+
+router
+  .route("/")
+  .get(
+    validate(votesAccountValidation.getVotesAccounts),
+    votesAccountController.getVotesAccounts
+  );
+
 router
   .route("/:votesAccountId")
   .get(

@@ -22,6 +22,7 @@ const getScrutinys = catchAsync(async (req, res) => {
     "complaintsReceived",
     "tenderedVotes",
     "votersUsedAlternateDoc",
+    "numberOfConstituency",
   ]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
   if (filter.tenderedVotes) {
@@ -36,6 +37,9 @@ const getScrutinys = catchAsync(async (req, res) => {
         ],
       },
     };
+  }
+  if (req.user.constituencyNumber) {
+    filter = { ...filter, numberOfConstituency: req.user.constituencyNumber };
   }
   const result = await scrutinyService.queryScrutiny(filter, {
     ...options,
@@ -61,6 +65,13 @@ const getAbstrctReport = catchAsync(async (req, res) => {
           { $multiply: ["$votersEPIC", 0.25] },
         ],
       },
+    };
+  }
+
+  if (req.user.constituencyNumber) {
+    matchQuery = {
+      ...matchQuery,
+      numberOfConstituency: req.user.constituencyNumber,
     };
   }
   let abstractReport = await scrutinyService.getAbstrctReport({

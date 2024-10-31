@@ -17,8 +17,11 @@ const createVotesAccount = catchAsync(async (req, res) => {
 });
 
 const getVotesAccounts = catchAsync(async (req, res) => {
-  const filter = pick(req.query, ["givenName"]);
+  let filter = pick(req.query, ["givenName"]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
+  if (req.user.constituencyNumber) {
+    filter = { ...filter, numberOfConstituency: req.user.constituencyNumber };
+  }
   const result = await votesAccountService.queryVotesAccount(filter, {
     ...options,
   });

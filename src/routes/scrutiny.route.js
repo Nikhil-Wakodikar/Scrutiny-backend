@@ -9,10 +9,6 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(
-    validate(scrutinyValidation.getScrutinys),
-    scrutinyController.getScrutinys
-  )
   .post(
     [
       uploadScrutiny.single("file"),
@@ -22,18 +18,25 @@ router
   );
 
 router
+  .route("/get-data-by-image")
+  .post(imgDataUpload.single("file"), scrutinyController.getScrutinyDataByImg);
+
+// Token authentication for all routes defined in this file
+router.use(auth.auth());
+
+router
+  .route("/")
+  .get(
+    validate(scrutinyValidation.getScrutinys),
+    scrutinyController.getScrutinys
+  );
+
+router
   .route("/abstract-report")
   .get(
     validate(scrutinyValidation.getAbstrctReport),
     scrutinyController.getAbstrctReport
   );
-
-router
-  .route("/get-data-by-image")
-  .post(imgDataUpload.single("file"), scrutinyController.getScrutinyDataByImg);
-
-// Token authentication for all routes defined in this file
-// router.use(auth.auth());
 
 router
   .route("/:scrutinyId")

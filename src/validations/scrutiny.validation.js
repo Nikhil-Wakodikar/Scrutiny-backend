@@ -42,6 +42,8 @@ const deleteScrutiny = {
   }),
 };
 
+const isScrutinySubmitActive = {};
+
 module.exports = {
   deleteScrutiny,
   getScrutinys,
@@ -49,4 +51,5 @@ module.exports = {
   updateScrutiny,
   createScrutiny,
   getAbstrctReport,
+  isScrutinySubmitActive,
 };

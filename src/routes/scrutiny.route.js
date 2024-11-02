@@ -39,6 +39,13 @@ router
   );
 
 router
+  .route("/is-scrutiny-submit-active")
+  .get(
+    validate(scrutinyValidation.isScrutinySubmitActive),
+    scrutinyController.isScrutinySubmitActive
+  );
+
+router
   .route("/:scrutinyId")
   .get(
     validate(scrutinyValidation.getScrutinyById),

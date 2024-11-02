@@ -2,9 +2,15 @@ const httpStatus = require("http-status");
 const pick = require("../utils/pick");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
-const { scrutinyService, fileService } = require("../services");
+const { scrutinyService, fileService, userService } = require("../services");
 
 const createScrutiny = catchAsync(async (req, res) => {
+  if (!(await userService.getScrutinySubmit(req.user._id))) {
+    throw new ApiError(
+      httpStatus.NOT_ACCEPTABLE,
+      "Scrutiny submition not allowed"
+    );
+  }
   let fileUrl = null;
   if (req.file) {
     fileUrl = "assets/scrutiny/" + req.file.filename;
@@ -90,6 +96,12 @@ const getScrutiny = catchAsync(async (req, res) => {
 });
 
 const updateScrutiny = catchAsync(async (req, res) => {
+  if (!(await userService.getScrutinySubmit(req.user._id))) {
+    throw new ApiError(
+      httpStatus.NOT_ACCEPTABLE,
+      "Scrutiny submition not allowed"
+    );
+  }
   let scrutiny = await scrutinyService.getScrutinyById(req.params.scrutinyId);
   if (!scrutiny) {
     throw new ApiError(httpStatus.NOT_FOUND, "Scrunity not found");
@@ -525,6 +537,13 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
   res.send(obj);
 });
 
+const isScrutinySubmitActive = catchAsync(async (req, res) => {
+  const isScrutinySubmitActive = await userService.getScrutinySubmit(
+    req.user._id
+  );
+  res.send({ isScrutinySubmitActive });
+});
+
 module.exports = {
   createScrutiny,
   getScrutinys,
@@ -533,4 +552,5 @@ module.exports = {
   deleteScrutiny,
   getAbstrctReport,
   getScrutinyDataByImg,
+  isScrutinySubmitActive,
 };

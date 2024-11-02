@@ -143,6 +143,35 @@ const deleteUserById = async (userId) => {
   return User;
 };
 
+/**
+ * Update user isScrutinySubmitActive by id
+ * @param {ObjectId} userId
+ * @param {Boolean} status
+ * @returns {Promise<User>}
+ */
+const updateScrutinySubmit = async (userId, status) => {
+  const user = await getUserById(userId);
+  if (!user) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "User not found");
+  }
+  Object.assign(user, { isScrutinySubmitActive: status });
+  await user.save();
+  return user;
+};
+
+/**
+ * get user isScrutinySubmitActive by id
+ * @param {ObjectId} userId
+ * @returns {Promise<Boolean>}
+ */
+const getScrutinySubmit = async (userId) => {
+  const user = await User.findOne({ type: "ro" });
+  if (!user) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "ro not found");
+  }
+  return user.isScrutinySubmitActive;
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -152,4 +181,6 @@ module.exports = {
   updateOrgById,
   savepostById,
   deleteUserById,
+  updateScrutinySubmit,
+  getScrutinySubmit,
 };

@@ -96,7 +96,10 @@ const getScrutiny = catchAsync(async (req, res) => {
 });
 
 const updateScrutiny = catchAsync(async (req, res) => {
-  if (!(await userService.getScrutinySubmit(req.user._id))) {
+  if (
+    req.user.type !== "ro" &&
+    !(await userService.getScrutinySubmit(req.user._id))
+  ) {
     throw new ApiError(
       httpStatus.NOT_ACCEPTABLE,
       "Scrutiny submition not allowed"

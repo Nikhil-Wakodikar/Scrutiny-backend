@@ -8,16 +8,6 @@ const { uploadScrutiny, imgDataUpload } = require("../middlewares/multer");
 const router = express.Router();
 
 router
-  .route("/")
-  .post(
-    [
-      uploadScrutiny.single("file"),
-      validate(scrutinyValidation.createScrutiny),
-    ],
-    scrutinyController.createScrutiny
-  );
-
-router
   .route("/get-data-by-image")
   .post(imgDataUpload.single("file"), scrutinyController.getScrutinyDataByImg);
 
@@ -36,6 +26,13 @@ router
   .get(
     validate(scrutinyValidation.getAbstrctReport),
     scrutinyController.getAbstrctReport
+  )
+  .post(
+    [
+      uploadScrutiny.single("file"),
+      validate(scrutinyValidation.createScrutiny),
+    ],
+    scrutinyController.createScrutiny
   );
 
 router

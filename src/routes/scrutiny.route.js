@@ -7,12 +7,8 @@ const { uploadScrutiny, imgDataUpload } = require("../middlewares/multer");
 
 const router = express.Router();
 
-router
-  .route("/get-data-by-image")
-  .post(imgDataUpload.single("file"), scrutinyController.getScrutinyDataByImg);
-
 // Token authentication for all routes defined in this file
-// router.use(auth.auth());
+router.use(auth.auth());
 
 router
   .route("/")
@@ -27,6 +23,10 @@ router
     ],
     scrutinyController.createScrutiny
   );
+
+router
+  .route("/get-data-by-image")
+  .post(imgDataUpload.single("file"), scrutinyController.getScrutinyDataByImg);
 
 router
   .route("/abstract-report")

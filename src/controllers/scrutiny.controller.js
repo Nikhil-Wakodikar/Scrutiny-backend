@@ -5,12 +5,12 @@ const catchAsync = require("../utils/catchAsync");
 const { scrutinyService, fileService, userService } = require("../services");
 
 const createScrutiny = catchAsync(async (req, res) => {
-  // if (!(await userService.getScrutinySubmit(req.user._id))) {
-  //   throw new ApiError(
-  //     httpStatus.NOT_ACCEPTABLE,
-  //     "Scrutiny submition not allowed"
-  //   );
-  // }
+  if (!(await userService.getScrutinySubmit(req.user._id))) {
+    throw new ApiError(
+      httpStatus.NOT_ACCEPTABLE,
+      "Scrutiny submition not allowed"
+    );
+  }
   let fileUrl = null;
   if (req.file) {
     fileUrl = "assets/scrutiny/" + req.file.filename;

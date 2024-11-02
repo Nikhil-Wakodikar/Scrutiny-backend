@@ -8,7 +8,7 @@ const userController = require("../controllers/user.controller");
 const router = express.Router();
 
 // Token authentication for all routes defined in this file
-// router.use(auth.auth());
+router.use(auth.auth());
 
 // Routes: get users, create user
 router

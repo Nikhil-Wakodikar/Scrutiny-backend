@@ -19,13 +19,6 @@ router
   .get(
     validate(scrutinyValidation.getScrutinys),
     scrutinyController.getScrutinys
-  );
-
-router
-  .route("/abstract-report")
-  .get(
-    validate(scrutinyValidation.getAbstrctReport),
-    scrutinyController.getAbstrctReport
   )
   .post(
     [
@@ -33,6 +26,13 @@ router
       validate(scrutinyValidation.createScrutiny),
     ],
     scrutinyController.createScrutiny
+  );
+
+router
+  .route("/abstract-report")
+  .get(
+    validate(scrutinyValidation.getAbstrctReport),
+    scrutinyController.getAbstrctReport
   );
 
 router

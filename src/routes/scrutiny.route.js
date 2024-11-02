@@ -12,7 +12,7 @@ router
   .post(imgDataUpload.single("file"), scrutinyController.getScrutinyDataByImg);
 
 // Token authentication for all routes defined in this file
-router.use(auth.auth());
+// router.use(auth.auth());
 
 router
   .route("/")

@@ -20,6 +20,11 @@ if (config.env !== "test") {
   app.use(morgan.errorHandler);
 }
 
+// app.use((req, res, next) => {
+//   console.log(req);
+//   next();
+// });
+
 // Set necessary HTTP headers for app security
 // app.use(helmet());
 app.use(

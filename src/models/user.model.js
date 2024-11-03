@@ -43,6 +43,8 @@ const userSchema = mongoose.Schema(
       enum: [roles.org, roles.user, roles.admin],
     },
     constituencyNumber: { type: Number },
+    isScrutinySubmitActive: { type: Boolean, default: true, private: true },
+    scrutiny: { type: mongoose.SchemaTypes.ObjectId },
   },
   {
     timestamps: true,

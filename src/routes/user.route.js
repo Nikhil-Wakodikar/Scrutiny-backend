@@ -16,6 +16,13 @@ router
   .post(validate(userValidation.createUser), userController.createUser)
   .get(validate(userValidation.getUsers), userController.getUsers);
 
+router
+  .route("/update-scrutiny-submit")
+  .post(
+    validate(userValidation.updateScrutinySubmit),
+    userController.updateScrutinySubmit
+  );
+
 // Routes: get one user, update user, delete user
 router
   .route("/:userId")

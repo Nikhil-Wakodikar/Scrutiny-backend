@@ -63,6 +63,17 @@ const deleteUser = catchAsync(async (req, res) => {
   res.status(httpStatus.NO_CONTENT).send();
 });
 
+const updateScrutinySubmit = catchAsync(async (req, res) => {
+  if (req.user.type !== "ro") {
+    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid request");
+  }
+  const user = await userService.updateScrutinySubmit(
+    req.user._id,
+    !req.user.isScrutinySubmitActive
+  );
+  res.send({ isScrutinySubmitActive: !req.user.isScrutinySubmitActive });
+});
+
 module.exports = {
   createUser,
   getUsers,
@@ -71,4 +82,5 @@ module.exports = {
   savePost,
   deleteUser,
   updateOrg,
+  updateScrutinySubmit,
 };

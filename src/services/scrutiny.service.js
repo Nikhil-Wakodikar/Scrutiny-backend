@@ -58,7 +58,7 @@ const updateScrutinyById = async (scrutinyId, updateBody) => {
  * @returns {Promise<Boolean>}
  */
 const deleteScrutinyById = async (scrutinyId) => {
-  await Scrutiny.deleteMany({ _id: scrutinyId });
+  await Scrutiny.deleteOne({ _id: scrutinyId });
   return true;
 };
 

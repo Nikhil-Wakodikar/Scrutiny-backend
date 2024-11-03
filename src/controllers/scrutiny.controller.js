@@ -15,11 +15,33 @@ const createScrutiny = catchAsync(async (req, res) => {
   if (req.file) {
     fileUrl = "assets/scrutiny/" + req.file.filename;
   }
-  const scrunity = await scrutinyService.createScrutiny({
+  const scrutiny = await scrutinyService.createScrutiny({
     ...req.body,
     fileUrl,
   });
-  res.status(httpStatus.CREATED).send(scrunity);
+  // console.log("scrutiny==>", scrutiny);
+  if (scrutiny) {
+    if (req.user.scrutiny) {
+      let scrutinyTemp = await scrutinyService.getScrutinyById(
+        req.user.scrutiny
+      );
+      // console.log(scrutinyTemp);
+      if (scrutinyTemp) {
+        if (scrutinyTemp.fileUrl) {
+          // delete file
+          await fileService.deleteLocal("src/" + scrutinyTemp.fileUrl);
+          // console.log(scrutinyTemp.fileUrl);
+        }
+        const del = await scrutinyService.deleteScrutinyById(scrutinyTemp._id);
+        // console.log(del);
+      }
+    }
+    await userService.updateUserById(req.user._id, {
+      scrutiny: scrutiny._id,
+    });
+    // console.log("user==>", req.user);
+  }
+  res.status(httpStatus.CREATED).send(scrutiny);
 });
 
 const getScrutinys = catchAsync(async (req, res) => {
@@ -90,7 +112,7 @@ const getAbstrctReport = catchAsync(async (req, res) => {
 const getScrutiny = catchAsync(async (req, res) => {
   let scrutiny = await scrutinyService.getScrutinyById(req.params.scrutinyId);
   if (!scrutiny) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Scrunity not found");
+    throw new ApiError(httpStatus.NOT_FOUND, "scrutiny not found");
   }
   res.send(scrutiny);
 });
@@ -107,7 +129,7 @@ const updateScrutiny = catchAsync(async (req, res) => {
   }
   let scrutiny = await scrutinyService.getScrutinyById(req.params.scrutinyId);
   if (!scrutiny) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Scrunity not found");
+    throw new ApiError(httpStatus.NOT_FOUND, "scrutiny not found");
   }
   scrutiny = await scrutinyService.updateScrutinyById(
     req.params.scrutinyId,
@@ -117,12 +139,12 @@ const updateScrutiny = catchAsync(async (req, res) => {
 });
 
 const deleteScrutiny = catchAsync(async (req, res) => {
-  let scrunity = await scrutinyService.getScrutinyById(req.params.scrunity);
-  if (!scrunity) {
-    throw new ApiError(httpStatus.NOT_FOUND, "Scrunity not found");
+  let scrutiny = await scrutinyService.getScrutinyById(req.params.scrutiny);
+  if (!scrutiny) {
+    throw new ApiError(httpStatus.NOT_FOUND, "scrutiny not found");
   }
-  scrunity = await scrutinyService.deleteScrutinyById(req.params.tripId);
-  res.send(scrunity);
+  scrutiny = await scrutinyService.deleteScrutinyById(req.params.tripId);
+  res.send(scrutiny);
 });
 
 const getScrutinyDataByImg = catchAsync(async (req, res) => {

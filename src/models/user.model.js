@@ -44,6 +44,7 @@ const userSchema = mongoose.Schema(
     },
     constituencyNumber: { type: Number },
     isScrutinySubmitActive: { type: Boolean, default: true, private: true },
+    scrutiny: { type: mongoose.SchemaTypes.ObjectId },
   },
   {
     timestamps: true,

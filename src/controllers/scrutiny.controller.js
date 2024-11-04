@@ -51,6 +51,7 @@ const getScrutinys = catchAsync(async (req, res) => {
     "tenderedVotes",
     "votersUsedAlternateDoc",
     "numberOfConstituency",
+    "complaintAboutEVM",
   ]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
   if (filter.tenderedVotes) {
@@ -81,6 +82,7 @@ const getAbstrctReport = catchAsync(async (req, res) => {
     "complaintsReceived",
     "tenderedVotes",
     "votersUsedAlternateDoc",
+    "complaintAboutEVM",
   ]);
   if (matchQuery.tenderedVotes) {
     matchQuery = { tenderedVotes: { $gt: 4 } };

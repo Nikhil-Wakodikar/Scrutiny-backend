@@ -9,10 +9,6 @@ const router = express.Router();
 
 router
   .route("/")
-  .get(
-    validate(votesAccountValidation.getVotesAccounts),
-    votesAccountController.getVotesAccounts
-  )
   .post(
     [
       uploadVotersAccount.single("file"),

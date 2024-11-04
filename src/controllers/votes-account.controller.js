@@ -89,52 +89,56 @@ const getVotesAccountByImg = catchAsync(async (req, res) => {
         : null,
       nameOfPollingStation: upload.data["Polling Station Name"],
       buCuVvpatUsed: {
-        ballotUnit: upload.data["BU"] ? parseInt(upload.data["BU"]) : null,
-        controlUnit: upload.data["CU"] ? parseInt(upload.data["CU"]) : null,
-        vvpat: upload.data["VVPAT"] ? parseInt(upload.data["VVPAT"]) : null,
+        ballotUnit: upload.data["नियंत्रण युनिट"]
+          ? parseInt(upload.data["नियंत्रण युनिट"])
+          : null,
+        controlUnit: upload.data["मतदान युनिट"]
+          ? parseInt(upload.data["मतदान युनिट"])
+          : null,
+        vvpat: upload.data["व्हीव्हीपॅट"]
+          ? parseInt(upload.data["व्हीव्हीपॅट"])
+          : null,
       },
       countOfElectorsAssigned: upload.data[
-        "Total number of electors assigned to the Polling Station"
+        "१. मतदान केंद्रावरील मतदारांची एकूण संख्या"
       ]
-        ? parseInt(
-            upload.data[
-              "Total number of electors assigned to the Polling Station"
-            ]
-          )
+        ? parseInt(upload.data["१. मतदान केंद्रावरील मतदारांची एकूण संख्या"])
         : null,
       countOfRegistorForVoters: upload.data[
-        "Total number of voters as entered in the Register for Voters (Form 17A)"
+        "२. मतदार नोंदवहीत (नमुना १७-ए) नोंदविलेल्या मतदारांची एकूण संख्या"
       ]
         ? parseInt(
             upload.data[
-              "Total number of voters as entered in the Register for Voters (Form 17A)"
+              "२. मतदार नोंदवहीत (नमुना १७-ए) नोंदविलेल्या मतदारांची एकूण संख्या"
             ]
           )
         : null,
       countOfNotToVote: upload.data[
-        "Number of voters deciding not to record votes under rule 49-0"
+        "३. नियम ४९-ओ अन्वये मत न नोंदविण्याचे ठरवलेल्या मतदारांची संख्या"
       ]
         ? parseInt(
             upload.data[
-              "Number of voters deciding not to record votes under rule 49-0"
+              "३. नियम ४९-ओ अन्वये मत न नोंदविण्याचे ठरवलेल्या मतदारांची संख्या"
             ]
           )
         : null,
       countOfNotAllowedToVote: upload.data[
-        "Number of voters not allowed to vote under rule 49M"
+        "४. नियम ४९-एम अन्वये मतदान करण्याची परवानगी न दिलेल्या मतदारांची संख्या"
       ]
         ? parseInt(
-            upload.data["Number of voters not allowed to vote under rule 49M"]
+            upload.data[
+              "४. नियम ४९-एम अन्वये मतदान करण्याची परवानगी न दिलेल्या मतदारांची संख्या"
+            ]
           )
         : null,
       countOfVotesToDeduct: {
         numberOftestVotesCast: {
           totalNumber: upload.data[
-            "Test votes recorded under rule 49MA (d) required to be deducted"
+            "५. नियम ४९-एमए (डी) अन्वये नोंदविलेली चाचणी मते ही वजा करणे आवश्यक आहे- अ) वजा करावयाच्या चाचणी मतांची एकूण संख्या"
           ]
             ? parseInt(
                 upload.data[
-                  "Test votes recorded under rule 49MA (d) required to be deducted"
+                  "५. नियम ४९-एमए (डी) अन्वये नोंदविलेली चाचणी मते ही वजा करणे आवश्यक आहे- अ) वजा करावयाच्या चाचणी मतांची एकूण संख्या"
                 ]
               )
             : null,
@@ -147,7 +151,9 @@ const getVotesAccountByImg = catchAsync(async (req, res) => {
         },
       },
       countOfVotesRecordedAsVotingMachine:
-        upload.data["Total number of votes recorded as per voting machine"],
+        upload.data[
+          "६. मतदान यंत्रानुसार नोंदविण्यात आलेल्या मताची एकूण संख्या"
+        ],
       discrepancyNotice:
         upload.data[
           "Whether the total number of votes as shown against item 6 tallies with the total number of votes as shown against item 2 minus numbers of voters deciding not to record votes as against item 3 minus number of vote as against item 4(i.e., 2-3-4) or any discrepancy noticed"

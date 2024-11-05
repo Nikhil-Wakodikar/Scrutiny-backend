@@ -67,15 +67,16 @@ const getScrutinys = catchAsync(async (req, res) => {
       },
     };
   }
-
-  // if (filter.identifyAsASD) {
-  //   filter = {
-  //     $expr: {
-  //       $gt: ["$a", { $multiply: [0.1, "$b"] }], // Check if a > 10% of b
-  //     },
-  //   };
-  // }
-
+  if (filter.identifyAsASD) {
+    filter = {
+      $expr: {
+        $gt: [
+          "$totalAsdVotesCast",
+          { $multiply: [0.1, "$personsVoted.total"] },
+        ],
+      },
+    };
+  }
   if (req.user.constituencyNumber) {
     filter = { ...filter, numberOfConstituency: req.user.constituencyNumber };
   }
@@ -102,6 +103,17 @@ const getAbstrctReport = catchAsync(async (req, res) => {
         $gt: [
           "$votersAlternativeDocument",
           { $multiply: ["$votersEPIC", 0.25] },
+        ],
+      },
+    };
+  }
+
+  if (filter.identifyAsASD) {
+    matchQuery = {
+      $expr: {
+        $gt: [
+          "$totalAsdVotesCast",
+          { $multiply: [0.1, "$personsVoted.total"] },
         ],
       },
     };

@@ -67,6 +67,15 @@ const getScrutinys = catchAsync(async (req, res) => {
       },
     };
   }
+
+  // if (filter.identifyAsASD) {
+  //   filter = {
+  //     $expr: {
+  //       $gt: ["$a", { $multiply: [0.1, "$b"] }], // Check if a > 10% of b
+  //     },
+  //   };
+  // }
+
   if (req.user.constituencyNumber) {
     filter = { ...filter, numberOfConstituency: req.user.constituencyNumber };
   }

@@ -74,6 +74,15 @@ const updateScrutinySubmit = catchAsync(async (req, res) => {
   res.send({ isScrutinySubmitActive: !req.user.isScrutinySubmitActive });
 });
 
+const getVotingPercent = catchAsync(async (req, res) => {
+  if (req.user.type !== "ro") {
+    throw new ApiError(httpStatus.NOT_ACCEPTABLE, "Access Denied");
+  }
+  const results = await userService.getVotingPercent(req.user._id);
+
+  res.send({ results });
+});
+
 module.exports = {
   createUser,
   getUsers,
@@ -83,4 +92,5 @@ module.exports = {
   deleteUser,
   updateOrg,
   updateScrutinySubmit,
+  getVotingPercent,
 };

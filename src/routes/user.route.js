@@ -16,6 +16,8 @@ router
   .post(validate(userValidation.createUser), userController.createUser)
   .get(validate(userValidation.getUsers), userController.getUsers);
 
+router.route("/voting-percent").get(userController.getVotingPercent);
+
 router
   .route("/update-scrutiny-submit")
   .post(

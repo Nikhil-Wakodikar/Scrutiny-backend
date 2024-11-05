@@ -51,6 +51,7 @@ const getScrutinys = catchAsync(async (req, res) => {
     "tenderedVotes",
     "votersUsedAlternateDoc",
     "numberOfConstituency",
+    "complaintAboutEVM",
   ]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
   if (filter.tenderedVotes) {
@@ -62,6 +63,16 @@ const getScrutinys = catchAsync(async (req, res) => {
         $gt: [
           "$votersAlternativeDocument",
           { $multiply: ["$votersEPIC", 0.25] },
+        ],
+      },
+    };
+  }
+  if (filter.identifyAsASD) {
+    filter = {
+      $expr: {
+        $gt: [
+          "$totalAsdVotesCast",
+          { $multiply: [0.1, "$personsVoted.total"] },
         ],
       },
     };
@@ -81,6 +92,7 @@ const getAbstrctReport = catchAsync(async (req, res) => {
     "complaintsReceived",
     "tenderedVotes",
     "votersUsedAlternateDoc",
+    "complaintAboutEVM",
   ]);
   if (matchQuery.tenderedVotes) {
     matchQuery = { tenderedVotes: { $gt: 4 } };
@@ -91,6 +103,17 @@ const getAbstrctReport = catchAsync(async (req, res) => {
         $gt: [
           "$votersAlternativeDocument",
           { $multiply: ["$votersEPIC", 0.25] },
+        ],
+      },
+    };
+  }
+
+  if (filter.identifyAsASD) {
+    matchQuery = {
+      $expr: {
+        $gt: [
+          "$totalAsdVotesCast",
+          { $multiply: [0.1, "$personsVoted.total"] },
         ],
       },
     };

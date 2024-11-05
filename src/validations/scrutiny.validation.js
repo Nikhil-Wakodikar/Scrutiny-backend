@@ -13,6 +13,8 @@ const getScrutinys = {
     tenderedVotes: Joi.number().integer(),
     votersUsedAlternateDoc: Joi.boolean(),
     numberOfConstituency: Joi.number(),
+    complaintAboutEVM: Joi.boolean(),
+    identifyAsASD: Joi.boolean(),
   }),
 };
 
@@ -25,6 +27,8 @@ const getAbstrctReport = {
     page: Joi.number().integer(),
     tenderedVotes: Joi.boolean(),
     votersUsedAlternateDoc: Joi.boolean(),
+    complaintAboutEVM: Joi.boolean(),
+    identifyAsASD: Joi.boolean(),
   }),
 };
 

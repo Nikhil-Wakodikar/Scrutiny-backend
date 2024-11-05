@@ -345,10 +345,10 @@ const getVotingPercent = async (userId) => {
           _id: 0,
           constituencyNumber: "$_id.constituencyNumber",
           electorsCount: "$_id.electorsCount",
-          totalVotesAsPer17C: "$_id.totalVotesAsPer17C",
-          votingPercentAsPer17C: "$_id.votingPercentAsPer17C",
-          totalVotesAsPer17A: "$totalVotesAsPer17A",
-          votingPercentAsPer17A: {
+          totalVotesAsPer17A: "$_id.totalVotesAsPer17C",
+          votingPercentAsPer17A: "$_id.votingPercentAsPer17C",
+          totalVotesAsPer17C: "$totalVotesAsPer17A",
+          votingPercentAsPer17C: {
             $round: [
               {
                 $multiply: [

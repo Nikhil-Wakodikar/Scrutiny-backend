@@ -1,6 +1,8 @@
 const httpStatus = require("http-status");
 const { User } = require("../models");
 const ApiError = require("../utils/ApiError");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 /**
  * Create a user
@@ -172,6 +174,199 @@ const getScrutinySubmit = async (userId) => {
   return user.isScrutinySubmitActive;
 };
 
+const getVotingPercent = async (userId) => {
+  const pipeline = [
+    {
+      $match:
+        /**
+         * query: The query in MQL.
+         */
+        {
+          _id: userId,
+        },
+    },
+    {
+      $lookup:
+        /**
+         * from: The target collection.
+         * localField: The local join field.
+         * foreignField: The target join field.
+         * as: The name for the results.
+         * pipeline: Optional pipeline to run on the foreign collection.
+         * let: Optional variables to use in the pipeline field stages.
+         */
+        {
+          from: "constituencies",
+          localField: "constituencyNumber",
+          foreignField: "numberOfConstituency",
+          as: "constituency",
+        },
+    },
+    {
+      $unwind:
+        /**
+         * path: Path to the array field.
+         * includeArrayIndex: Optional name for index.
+         * preserveNullAndEmptyArrays: Optional
+         *   toggle to unwind null and empty values.
+         */
+        {
+          path: "$constituency",
+          preserveNullAndEmptyArrays: true,
+        },
+    },
+    {
+      $lookup:
+        /**
+         * from: The target collection.
+         * localField: The local join field.
+         * foreignField: The target join field.
+         * as: The name for the results.
+         * pipeline: Optional pipeline to run on the foreign collection.
+         * let: Optional variables to use in the pipeline field stages.
+         */
+        {
+          from: "scrutinies",
+          localField: "constituencyNumber",
+          foreignField: "numberOfConstituency",
+          as: "scrutiny",
+        },
+    },
+    {
+      $unwind:
+        /**
+         * path: Path to the array field.
+         * includeArrayIndex: Optional name for index.
+         * preserveNullAndEmptyArrays: Optional
+         *   toggle to unwind null and empty values.
+         */
+        {
+          path: "$scrutiny",
+          preserveNullAndEmptyArrays: true,
+        },
+    },
+    {
+      $group:
+        /**
+         * _id: The id of the group.
+         * fieldN: The first field name.
+         */
+        {
+          _id: {
+            constituencyNumber: "$constituencyNumber",
+            electorsCount: "$constituency.electorsCount",
+          },
+          totalVoted: {
+            $sum: "$scrutiny.personsVoted.total",
+          },
+        },
+    },
+    {
+      $project:
+        /**
+         * specifications: The fields to
+         *   include or exclude.
+         */
+        {
+          _id: 0,
+          constituencyNumber: "$_id.constituencyNumber",
+          electorsCount: "$_id.electorsCount",
+          totalVotesAsPer17C: "$totalVoted",
+          votingPercentAsPer17C: {
+            $round: [
+              {
+                $multiply: [
+                  {
+                    $divide: ["$totalVoted", "$_id.electorsCount"],
+                  },
+                  100,
+                ],
+              },
+              2,
+            ],
+          },
+        },
+    },
+    {
+      $lookup:
+        /**
+         * from: The target collection.
+         * localField: The local join field.
+         * foreignField: The target join field.
+         * as: The name for the results.
+         * pipeline: Optional pipeline to run on the foreign collection.
+         * let: Optional variables to use in the pipeline field stages.
+         */
+        {
+          from: "votesAccounts",
+          localField: "constituencyNumber",
+          foreignField: "numberOfConstituency",
+          as: "result",
+        },
+    },
+    {
+      $unwind:
+        /**
+         * path: Path to the array field.
+         * includeArrayIndex: Optional name for index.
+         * preserveNullAndEmptyArrays: Optional
+         *   toggle to unwind null and empty values.
+         */
+        {
+          path: "$result",
+          preserveNullAndEmptyArrays: true,
+        },
+    },
+    {
+      $group:
+        /**
+         * _id: The id of the group.
+         * fieldN: The first field name.
+         */
+        {
+          _id: {
+            constituencyNumber: "$constituencyNumber",
+            electorsCount: "$electorsCount",
+            totalVotesAsPer17C: "$totalVotesAsPer17C",
+            votingPercentAsPer17C: "$votingPercentAsPer17C",
+          },
+          totalVotesAsPer17A: {
+            $sum: "$result.countOfVotesRecordedAsVotingMachine",
+          },
+        },
+    },
+    {
+      $project:
+        /**
+         * specifications: The fields to
+         *   include or exclude.
+         */
+        {
+          _id: 0,
+          constituencyNumber: "$_id.constituencyNumber",
+          electorsCount: "$_id.electorsCount",
+          totalVotesAsPer17C: "$_id.totalVotesAsPer17C",
+          votingPercentAsPer17C: "$_id.votingPercentAsPer17C",
+          totalVotesAsPer17A: "$totalVotesAsPer17A",
+          votingPercentAsPer17A: {
+            $round: [
+              {
+                $multiply: [
+                  {
+                    $divide: ["$totalVotesAsPer17A", "$_id.electorsCount"],
+                  },
+                  100,
+                ],
+              },
+              2,
+            ],
+          },
+        },
+    },
+  ];
+  return (await User.aggregate(pipeline))[0];
+};
+
 module.exports = {
   createUser,
   queryUsers,
@@ -183,4 +378,5 @@ module.exports = {
   deleteUserById,
   updateScrutinySubmit,
   getScrutinySubmit,
+  getVotingPercent,
 };

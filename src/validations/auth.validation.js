@@ -28,6 +28,17 @@ const login = {
     .min(2),
 };
 
+const sendLoginOtp = {
+  body: Joi.object().keys({
+    mobileNumber: Joi.object()
+      .keys({
+        dialCode: Joi.string().min(2).max(4).required(),
+        phone: Joi.string().length(10).required(),
+      })
+      .required(),
+  }),
+};
+
 const logout = {
   body: Joi.object().keys({
     token: Joi.string().required(),
@@ -62,4 +73,5 @@ module.exports = {
   forgotPassword,
   resetPassword,
   verifyEmail,
+  sendLoginOtp,
 };

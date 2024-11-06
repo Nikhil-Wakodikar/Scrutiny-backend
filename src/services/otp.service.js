@@ -57,7 +57,7 @@ const generateLoginOtp = async (user) => {
   );
   // generate 6 digit otp
   const loginOtp = Math.floor(100000 + Math.random() * 900000);
-  let otp = await saveOtp(loginOtp, user.id, otpTypes.loginOtp, expires);
+  let otp = await saveOtp(loginOtp, user.id, otpTypes.LOGIN, expires);
   // console.log("otp ====>", otp);
   return loginOtp;
 };

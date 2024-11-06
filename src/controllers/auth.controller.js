@@ -1,10 +1,12 @@
 const httpStatus = require("http-status");
 const catchAsync = require("../utils/catchAsync");
+const ApiError = require("../utils/ApiError");
 const {
   authService,
   userService,
   tokenService,
   emailService,
+  otpService,
 } = require("../services");
 
 const register = catchAsync(async (req, res) => {
@@ -32,6 +34,7 @@ const login = catchAsync(async (req, res) => {
     );
   } else if (otp) {
     const { mobileNumber, otp } = req.body;
+    // to be completed
   }
 
   const { token, expires } = await tokenService.generateAuthTokens(user);
@@ -52,6 +55,33 @@ const forgotPassword = catchAsync(async (req, res) => {
 
 const resetPassword = catchAsync(async (req, res) => {
   await authService.resetPassword(req.query.token, req.body.password);
+  res.status(httpStatus.NO_CONTENT).send();
+});
+
+const sendLoginOtp = catchAsync(async (req, res) => {
+  const { mobileNumber } = req.body;
+  const user = await userService.getUserByMobileNumber(
+    mobileNumber.dialCode,
+    mobileNumber.phone
+  );
+  if (!user) {
+    throw new ApiError(
+      httpStatus.NOT_FOUND,
+      "User not found with this mobile number"
+    );
+  }
+  const loginOtp = await otpService.generateLoginOtp(user);
+  const loginOtpMsg = `Your OTP for login is ${loginOtp}. Please do not share this with anyone.`;
+
+  let mob = user.mobileNumber.dialCode + user.mobileNumber.phone;
+  let data = {
+    message: loginOtpMsg,
+    mobileNumber: mob,
+  };
+
+  console.log(data);
+  // await SMSService.sendSMS({ ...data });
+
   res.status(httpStatus.NO_CONTENT).send();
 });
 
@@ -80,4 +110,5 @@ module.exports = {
   sendVerificationEmail,
   verifyEmail,
   self,
+  sendLoginOtp,
 };

@@ -3,18 +3,29 @@ const { password } = require("./custom.validation");
 
 const register = {
   body: Joi.object().keys({
-    email: Joi.string().required().email(),
-    password: Joi.string().required().custom(password),
-    givenName: Joi.string(),
+    givenName: Joi.string().required(),
+    mobileNumber: Joi.object().keys({
+      dialCode: Joi.string().min(2).max(4).required(),
+      phone: Joi.string().length(10).required(),
+    }),
+    password: Joi.string(),
     type: Joi.string(),
   }),
 };
 
 const login = {
-  body: Joi.object().keys({
-    email: Joi.string().required(),
-    password: Joi.string().required(),
-  }),
+  body: Joi.object()
+    .keys({
+      mobileNumber: Joi.object()
+        .keys({
+          dialCode: Joi.string().min(2).max(4).required(),
+          phone: Joi.string().length(10).required(),
+        })
+        .required(),
+      password: Joi.string(),
+      otp: Joi.string().length(6),
+    })
+    .min(2),
 };
 
 const logout = {

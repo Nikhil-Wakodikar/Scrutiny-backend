@@ -15,15 +15,19 @@ const register = catchAsync(async (req, res) => {
     // await org.remove();
     throw e;
   }
-  user = await user.populate("givenName email");
+  user = await user.populate("givenName mobileNumber");
   res.status(httpStatus.CREATED).send({
     user,
   });
 });
 
 const login = catchAsync(async (req, res) => {
-  const { email, password } = req.body;
-  const user = await authService.loginUserWithEmailAndPassword(email, password);
+  const { mobileNumber, password } = req.body;
+  const user = await authService.loginUserWithMobileNumberAndPassword(
+    mobileNumber.dialCode,
+    mobileNumber.phone,
+    password
+  );
   const { token, expires } = await tokenService.generateAuthTokens(user);
   res.send({
     user,

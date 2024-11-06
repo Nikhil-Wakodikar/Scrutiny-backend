@@ -10,10 +10,15 @@ const ObjectId = mongoose.Types.ObjectId;
  * @returns {Promise<User>}
  */
 const createUser = async (userBody) => {
-  if (await User.isEmailTaken(userBody.email)) {
+  if (
+    await User.isMobileNumberTaken(
+      userBody.mobileNumber.dialCode,
+      userBody.mobileNumber.phone
+    )
+  ) {
     throw new ApiError(
       httpStatus.BAD_REQUEST,
-      "User already exists with this email"
+      "User already exists with this mobile number"
     );
   }
   return User.create(userBody);
@@ -51,6 +56,16 @@ const getUserByEmail = async (email) => {
   return User.findOne({
     email,
   });
+};
+
+/**
+ * Get user by mobile number
+ * @param {string} dialCode
+ * @param {string} phone
+ * @returns {Promise<User>}
+ */
+const getUserByMobileNumber = async (dialCode, phone) => {
+  return User.findOne({ mobileNumber: { dialCode, phone } });
 };
 
 /**
@@ -376,6 +391,7 @@ module.exports = {
   updateOrgById,
   savepostById,
   deleteUserById,
+  getUserByMobileNumber,
   updateScrutinySubmit,
   getScrutinySubmit,
   getVotingPercent,

@@ -15,6 +15,7 @@ const getScrutinys = {
     numberOfConstituency: Joi.number(),
     complaintAboutEVM: Joi.boolean(),
     identifyAsASD: Joi.boolean(),
+    avgPollingPercent: Joi.boolean(),
   }),
 };
 

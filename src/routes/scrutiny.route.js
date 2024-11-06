@@ -35,6 +35,8 @@ router
     scrutinyController.getAbstrctReport
   );
 
+router.route("/avg-polling-percent").get(scrutinyController.avgPollingPercent);
+
 router
   .route("/is-scrutiny-submit-active")
   .get(

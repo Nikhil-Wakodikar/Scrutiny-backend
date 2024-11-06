@@ -8,3 +8,4 @@ module.exports.fileService = require("./file.service");
 module.exports.scrutinyService = require("./scrutiny.service");
 module.exports.votesAccountService = require("./votes-account.service");
 module.exports.otpService = require("./otp.service");
+module.exports.SMSService = require("./sms.service");

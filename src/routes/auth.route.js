@@ -13,7 +13,7 @@ router.post(
 );
 router.post("/login", validate(authValidation.login), authController.login);
 router.post(
-  "/login-otp",
+  "/send-login-otp",
   validate(authValidation.sendLoginOtp),
   authController.sendLoginOtp
 );

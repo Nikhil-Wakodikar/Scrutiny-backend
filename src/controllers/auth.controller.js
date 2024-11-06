@@ -7,6 +7,7 @@ const {
   tokenService,
   emailService,
   otpService,
+  SMSService,
 } = require("../services");
 
 const register = catchAsync(async (req, res) => {
@@ -76,16 +77,14 @@ const sendLoginOtp = catchAsync(async (req, res) => {
     );
   }
   const loginOtp = await otpService.generateLoginOtp(user);
-  const loginOtpMsg = `Your OTP for login is ${loginOtp}. Please do not share this with anyone.`;
 
   let mob = user.mobileNumber.dialCode + user.mobileNumber.phone;
   let data = {
-    message: loginOtpMsg,
-    mobileNumber: mob,
+    message: loginOtp,
+    mobileNumber: user.mobileNumber.phone,
   };
-
   console.log(data);
-  // await SMSService.sendSMS({ ...data });
+  await SMSService.sendSMS({ ...data });
 
   res.status(httpStatus.NO_CONTENT).send();
 });

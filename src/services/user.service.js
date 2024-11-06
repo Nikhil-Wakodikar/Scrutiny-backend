@@ -394,5 +394,6 @@ module.exports = {
   getUserByMobileNumber,
   updateScrutinySubmit,
   getScrutinySubmit,
+  getUserByMobileNumber,
   getVotingPercent,
 };

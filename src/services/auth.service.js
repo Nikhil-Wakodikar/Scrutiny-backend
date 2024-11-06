@@ -1,9 +1,11 @@
 const httpStatus = require("http-status");
 const tokenService = require("./token.service");
 const userService = require("./user.service");
+const otpService = require("./otp.service");
 const Token = require("../models/token.model");
 const ApiError = require("../utils/ApiError");
 const { tokenTypes } = require("../config/tokens");
+const { otpTypes } = require("../config/otp");
 
 /**
  * Login with username and password
@@ -24,6 +26,28 @@ const loginUserWithMobileNumberAndPassword = async (
       "Incorrect mobile number or password"
     );
   }
+  return await user.populate("givenName mobileNumber");
+};
+
+/**
+ * Login with username and otp
+ * @param {string} dialCode
+ * @param {string} phone
+ * @param {string} otp
+ * @returns {Promise<User>}
+ */
+const loginUserWithMobileNumberAndOtp = async (dialCode, phone, otp) => {
+  const user = await userService.getUserByMobileNumber(dialCode, phone);
+  if (!user || user.deleted) {
+    throw new ApiError(
+      httpStatus.UNAUTHORIZED,
+      "Incorrect mobile number or password"
+    );
+  }
+
+  const verifyOtp = await otpService.verifyOtp(otp, otpTypes.LOGIN);
+  // to be completed
+
   return await user.populate("givenName mobileNumber");
 };
 

@@ -22,12 +22,18 @@ const register = catchAsync(async (req, res) => {
 });
 
 const login = catchAsync(async (req, res) => {
-  const { mobileNumber, password } = req.body;
-  const user = await authService.loginUserWithMobileNumberAndPassword(
-    mobileNumber.dialCode,
-    mobileNumber.phone,
-    password
-  );
+  let user;
+  if (req.body.password) {
+    const { mobileNumber, password } = req.body;
+    user = await authService.loginUserWithMobileNumberAndPassword(
+      mobileNumber.dialCode,
+      mobileNumber.phone,
+      password
+    );
+  } else if (otp) {
+    const { mobileNumber, otp } = req.body;
+  }
+
   const { token, expires } = await tokenService.generateAuthTokens(user);
   res.send({
     user,

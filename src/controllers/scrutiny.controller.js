@@ -52,6 +52,7 @@ const getScrutinys = catchAsync(async (req, res) => {
     "votersUsedAlternateDoc",
     "numberOfConstituency",
     "complaintAboutEVM",
+    "avgPollingPercent",
   ]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
   if (filter.tenderedVotes) {
@@ -108,7 +109,7 @@ const getAbstrctReport = catchAsync(async (req, res) => {
     };
   }
 
-  if (filter.identifyAsASD) {
+  if (matchQuery.identifyAsASD) {
     matchQuery = {
       $expr: {
         $gt: [
@@ -168,6 +169,45 @@ const deleteScrutiny = catchAsync(async (req, res) => {
   }
   scrutiny = await scrutinyService.deleteScrutinyById(req.params.tripId);
   res.send(scrutiny);
+});
+
+const avgPollingPercent = catchAsync(async (req, res) => {
+  const { avgRatio, electorsCount, numberOfConstituency, nameOfConstituency } =
+    await scrutinyService.findGlobalAvgVoting(req.user.constituencyNumber);
+  const margin = avgRatio * 0.15;
+  const lowerLimit = avgRatio - margin;
+  const upperLimit = avgRatio + margin;
+
+  const results = await scrutinyService.find15percentLimit(
+    req.user.constituencyNumber,
+    upperLimit,
+    lowerLimit,
+    electorsCount
+  );
+
+  let responseObj;
+  if (req.query.abstract) {
+    const { count } = results;
+    responseObj = {
+      numberOfConstituency,
+      nameOfConstituency,
+      electorsCount,
+      count,
+    };
+  } else {
+    const { _id, ...rest } = results;
+    responseObj = {
+      ...rest,
+      avgRatio,
+      lowerLimit,
+      upperLimit,
+      electorsCount,
+      numberOfConstituency,
+      nameOfConstituency,
+    };
+  }
+
+  res.send(responseObj);
 });
 
 const getScrutinyDataByImg = catchAsync(async (req, res) => {
@@ -601,4 +641,5 @@ module.exports = {
   getAbstrctReport,
   getScrutinyDataByImg,
   isScrutinySubmitActive,
+  avgPollingPercent,
 };

@@ -58,6 +58,7 @@ module.exports = {
     resetPasswordExpirationMinutes:
       envVars.JWT_RESET_PASSWORD_EXPIRATION_MINUTES,
     verifyEmailExpirationMinutes: envVars.JWT_VERIFY_EMAIL_EXPIRATION_MINUTES,
+    verifyLoginExpirationMinutes: envVars.VERIFY_LOGIN_EXPIRATION_MINUTES,
   },
   email: {
     provider: envVars.EMAIL_PROVIDER, // sendgrid, aws, nodemailer

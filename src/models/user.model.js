@@ -10,21 +10,23 @@ const userSchema = mongoose.Schema(
       type: String,
       trim: true,
     },
-    email: {
+    mobileNumber: {
+      dialCode: { type: String, default: "+91" },
+      phone: { type: String },
+    },
+    type: {
       type: String,
       required: true,
-      unique: true,
-      trim: true,
-      lowercase: true,
-      validate(value) {
-        if (!validator.isEmail(value)) {
-          throw new Error("Invalid email");
-        }
-      },
+      default: roles.user,
+      enum: [roles.po, roles.ro, roles.aro],
     },
+    constituencyNumber: { type: Number },
+    numberOfPollingStation: { type: Number },
+    isScrutinySubmitActive: { type: Boolean, default: true, private: true },
+    scrutiny: { type: mongoose.SchemaTypes.ObjectId },
     password: {
       type: String,
-      required: true,
+      required: false,
       trim: true,
       minlength: 8,
       validate(value) {
@@ -36,16 +38,6 @@ const userSchema = mongoose.Schema(
       },
       private: true, // used by the private plugin
     },
-    type: {
-      type: String,
-      required: true,
-      default: roles.user,
-      enum: [roles.org, roles.user, roles.admin],
-    },
-    constituencyNumber: { type: Number },
-    numberOfPollingStation: { type: Number },
-    isScrutinySubmitActive: { type: Boolean, default: true, private: true },
-    scrutiny: { type: mongoose.SchemaTypes.ObjectId },
   },
   {
     timestamps: true,
@@ -64,6 +56,25 @@ userSchema.plugin(paginate);
  */
 userSchema.statics.isEmailTaken = async function (email, excludeUserId) {
   const user = await this.findOne({ email, _id: { $ne: excludeUserId } });
+  return !!user;
+};
+
+/**
+ * Check if mobile is taken
+ * @param {string} phone - The user's mobile phone
+ * @param {string} dialCode - The user's dial code
+ * @param {ObjectId} [excludeUserId] - The id of the user to be excluded
+ * @returns {Promise<boolean>}
+ */
+userSchema.statics.isMobileNumberTaken = async function (
+  dialCode,
+  phone,
+  excludeUserId
+) {
+  const user = await this.findOne({
+    mobileNumber: { dialCode, phone },
+    _id: { $ne: excludeUserId },
+  });
   return !!user;
 };
 

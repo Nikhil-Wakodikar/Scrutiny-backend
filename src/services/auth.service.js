@@ -38,15 +38,21 @@ const loginUserWithMobileNumberAndPassword = async (
  */
 const loginUserWithMobileNumberAndOtp = async (dialCode, phone, otp) => {
   const user = await userService.getUserByMobileNumber(dialCode, phone);
-  if (!user || user.deleted) {
+
+  const verifyOtp = await otpService.verifyOtp(otp, otpTypes.LOGIN);
+
+  if (
+    !user ||
+    user.deleted ||
+    verifyOtp.user.toString() !== user._id.toString()
+  ) {
     throw new ApiError(
       httpStatus.UNAUTHORIZED,
-      "Incorrect mobile number or password"
+      "Incorrect mobile number or otp"
     );
   }
 
-  const verifyOtp = await otpService.verifyOtp(otp, otpTypes.LOGIN);
-  // to be completed
+  await otpService.removeUserOtp(user, otpTypes.LOGIN);
 
   return await user.populate("givenName mobileNumber");
 };
@@ -98,6 +104,7 @@ const verifyEmail = async (verifyEmailToken) => {
 
 module.exports = {
   loginUserWithMobileNumberAndPassword,
+  loginUserWithMobileNumberAndOtp,
   resetPassword,
   verifyEmail,
 };

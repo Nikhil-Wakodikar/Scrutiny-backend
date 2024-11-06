@@ -40,7 +40,10 @@ const verifyOtp = async (otp, type) => {
     blacklisted: false,
   });
   if (!otpDoc) {
-    throw new ApiError(httpStatus.BAD_REQUEST, "Invalid OTP");
+    throw new ApiError(
+      httpStatus.UNAUTHORIZED,
+      "Incorrect mobile number or otp"
+    );
   }
   return otpDoc;
 };

@@ -32,9 +32,14 @@ const login = catchAsync(async (req, res) => {
       mobileNumber.phone,
       password
     );
-  } else if (otp) {
+  } else if (req.body.otp) {
     const { mobileNumber, otp } = req.body;
-    // to be completed
+
+    user = await authService.loginUserWithMobileNumberAndOtp(
+      mobileNumber.dialCode,
+      mobileNumber.phone,
+      otp
+    );
   }
 
   const { token, expires } = await tokenService.generateAuthTokens(user);

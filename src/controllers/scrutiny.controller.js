@@ -632,6 +632,18 @@ const isScrutinySubmitActive = catchAsync(async (req, res) => {
   res.send({ isScrutinySubmitActive });
 });
 
+const getTotalVotedDifference = catchAsync(async (req, res) => {
+  const constituencyNumber = req.user.constituencyNumber;
+  if (!constituencyNumber && req.user.type !== "ro") {
+    throw new ApiError(httpStatus.FORBIDDEN, "Cannot access");
+  }
+  const result = await scrutinyService.getTotalVotedDifference(
+    constituencyNumber
+  );
+  const { _id, ...rest } = result;
+  res.send({ ...rest });
+});
+
 module.exports = {
   createScrutiny,
   getScrutinys,
@@ -642,4 +654,5 @@ module.exports = {
   getScrutinyDataByImg,
   isScrutinySubmitActive,
   avgPollingPercent,
+  getTotalVotedDifference,
 };

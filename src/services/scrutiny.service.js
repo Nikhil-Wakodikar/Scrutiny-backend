@@ -260,6 +260,108 @@ const find15percentLimit = async (
   return (await Scrutiny.aggregate(pipeline))[0];
 };
 
+const getTotalVotedDifference = async (constituencyNumber) => {
+  const pipeline = [
+    {
+      $match:
+        /**
+         * query: The query in MQL.
+         */
+        {
+          numberOfConstituency: constituencyNumber,
+        },
+    },
+    {
+      $lookup:
+        /**
+         * from: The target collection.
+         * localField: The local join field.
+         * foreignField: The target join field.
+         * as: The name for the results.
+         * pipeline: Optional pipeline to run on the foreign collection.
+         * let: Optional variables to use in the pipeline field stages.
+         */
+        {
+          from: "votesAccounts",
+          localField: "numberOfConstituency",
+          foreignField: "numberOfConstituency",
+          as: "votesAccount",
+        },
+    },
+    {
+      $addFields:
+        /**
+         * newField: The new field name.
+         * expression: The new field expression.
+         */
+        {
+          votesAccount: {
+            $filter: {
+              input: "$votesAccount",
+              as: "tee",
+              cond: {
+                $eq: [
+                  "$$tee.numberOfPollingStation",
+                  "$numberOfPollingStation",
+                ],
+              },
+            },
+          },
+        },
+    },
+    {
+      $unwind:
+        /**
+         * path: Path to the array field.
+         * includeArrayIndex: Optional name for index.
+         * preserveNullAndEmptyArrays: Optional
+         *   toggle to unwind null and empty values.
+         */
+        {
+          path: "$votesAccount",
+          preserveNullAndEmptyArrays: true,
+        },
+    },
+    {
+      $match:
+        /**
+         * query: The query in MQL.
+         */
+        {
+          $expr: {
+            $ne: [
+              "$personsVoted.total",
+              "$votesAccount.countOfVotesRecordedAsVotingMachine",
+            ],
+          },
+        },
+    },
+    {
+      $group:
+        /**
+         * _id: The id of the group.
+         * fieldN: The first field name.
+         */
+        {
+          _id: null,
+          count: {
+            $sum: 1,
+          },
+          results: {
+            $push: "$$ROOT",
+          },
+          numberOfConstituency: {
+            $first: "$numberOfConstituency",
+          },
+          nameOfConstituency: {
+            $first: "$nameOfConstituency",
+          },
+        },
+    },
+  ];
+  return (await Scrutiny.aggregate(pipeline))[0];
+};
+
 module.exports = {
   createScrutiny,
   queryScrutiny,
@@ -269,4 +371,5 @@ module.exports = {
   getAbstrctReport,
   findGlobalAvgVoting,
   find15percentLimit,
+  getTotalVotedDifference,
 };

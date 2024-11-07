@@ -38,6 +38,10 @@ router
 router.route("/avg-polling-percent").get(scrutinyController.avgPollingPercent);
 
 router
+  .route("/total-voted-difference")
+  .get(scrutinyController.getTotalVotedDifference);
+
+router
   .route("/is-scrutiny-submit-active")
   .get(
     validate(scrutinyValidation.isScrutinySubmitActive),

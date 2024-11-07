@@ -8,7 +8,20 @@ const { imgDataUpload, uploadVotersAccount } = require("../middlewares/multer");
 const router = express.Router();
 
 router
+  .route("/create-votes-account")
+  .post(
+    uploadVotersAccount.single("file"),
+    votesAccountController.createVotesAccountWithoutAuth
+  );
+
+router.use(auth.auth());
+
+router
   .route("/")
+  .get(
+    validate(votesAccountValidation.getVotesAccounts),
+    votesAccountController.getVotesAccounts
+  )
   .post(
     [
       uploadVotersAccount.single("file"),
@@ -22,15 +35,6 @@ router
   .post(
     imgDataUpload.single("file"),
     votesAccountController.getVotesAccountByImg
-  );
-
-router.use(auth.auth());
-
-router
-  .route("/")
-  .get(
-    validate(votesAccountValidation.getVotesAccounts),
-    votesAccountController.getVotesAccounts
   );
 
 router

@@ -33,7 +33,6 @@ const votesAccount = mongoose.Schema(
     countOfVotesRecordedAsVotingMachine: { type: Number },
     discrepancyNotice: { type: Boolean },
     numberOfVoterUsedTenderedBallotPapers: { type: Number },
-
     countOfBalllotPapers: {
       receivedForUse: { type: Number },
       issuedToElectors: { type: Number },

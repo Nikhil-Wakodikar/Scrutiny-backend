@@ -16,6 +16,18 @@ const createVotesAccount = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(votesAccount);
 });
 
+const createVotesAccountWithoutAuth = catchAsync(async (req, res) => {
+  let fileUrl = null;
+  if (req.file) {
+    fileUrl = "assets/votes-account/" + req.file.filename;
+  }
+  const votesAccount = await votesAccountService.createVotesAccount({
+    ...req.body,
+    fileUrl,
+  });
+  res.status(httpStatus.CREATED).send();
+});
+
 const getVotesAccounts = catchAsync(async (req, res) => {
   let filter = pick(req.query, ["givenName"]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
@@ -204,4 +216,5 @@ module.exports = {
   getVotesAccount,
   getVotesAccountByImg,
   updateVotesAccount,
+  createVotesAccountWithoutAuth,
 };

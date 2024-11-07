@@ -44,6 +44,20 @@ const createScrutiny = catchAsync(async (req, res) => {
   res.status(httpStatus.CREATED).send(scrutiny);
 });
 
+const createScrutinyWithoutAuth = catchAsync(async (req, res) => {
+  let fileUrl = null;
+  if (req.file) {
+    fileUrl = "assets/scrutiny/" + req.file.filename;
+  }
+
+  const scrutiny = await scrutinyService.createScrutiny({
+    ...req.body,
+    fileUrl,
+  });
+
+  res.status(httpStatus.CREATED).send();
+});
+
 const getScrutinys = catchAsync(async (req, res) => {
   let filter = pick(req.query, [
     "pollingAgents",
@@ -655,4 +669,5 @@ module.exports = {
   isScrutinySubmitActive,
   avgPollingPercent,
   getTotalVotedDifference,
+  createScrutinyWithoutAuth,
 };

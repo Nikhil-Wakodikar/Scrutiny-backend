@@ -7,6 +7,13 @@ const { uploadScrutiny, imgDataUpload } = require("../middlewares/multer");
 
 const router = express.Router();
 
+router
+  .route("/create-scrutiny")
+  .post(
+    uploadScrutiny.single("file"),
+    scrutinyController.createScrutinyWithoutAuth
+  );
+
 // Token authentication for all routes defined in this file
 router.use(auth.auth());
 

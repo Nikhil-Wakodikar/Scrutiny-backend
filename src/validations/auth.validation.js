@@ -10,6 +10,10 @@ const register = {
     }),
     password: Joi.string(),
     type: Joi.string(),
+    nameOfConstituency: Joi.string(),
+    constituencyNumber: Joi.number(),
+    numberOfPollingStation: Joi.number(),
+    password: Joi.string(),
   }),
 };
 

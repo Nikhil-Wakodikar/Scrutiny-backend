@@ -10,7 +10,10 @@ const router = express.Router();
 router
   .route("/create-scrutiny")
   .post(
-    uploadScrutiny.single("file"),
+    [
+      uploadScrutiny.single("file"),
+      validate(scrutinyValidation.createScrutinyWithoutAuth),
+    ],
     scrutinyController.createScrutinyWithoutAuth
   );
 

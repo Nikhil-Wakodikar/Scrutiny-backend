@@ -10,7 +10,10 @@ const router = express.Router();
 router
   .route("/create-votes-account")
   .post(
-    uploadVotersAccount.single("file"),
+    [
+      uploadVotersAccount.single("file"),
+      votesAccountValidation.createVotesAccountWithoutAuth,
+    ],
     votesAccountController.createVotesAccountWithoutAuth
   );
 

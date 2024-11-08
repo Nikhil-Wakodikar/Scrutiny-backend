@@ -3,6 +3,13 @@ const { objectId } = require("./custom.validation");
 
 const createVotesAccount = {};
 
+const createVotesAccountWithoutAuth = {
+  body: Joi.object().keys({
+    numberOfConstituency: Joi.number().required(),
+    numberOfPollingStation: Joi.number().required(),
+  }),
+};
+
 const getVotesAccounts = {
   query: Joi.object().keys({
     sortBy: Joi.string(),
@@ -24,4 +31,5 @@ module.exports = {
   getVotesAccounts,
   getVotesAccountById,
   updateVotesAccount,
+  createVotesAccountWithoutAuth,
 };

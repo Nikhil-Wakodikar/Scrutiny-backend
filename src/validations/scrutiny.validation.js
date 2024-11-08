@@ -3,6 +3,13 @@ const { password, objectId } = require("./custom.validation");
 
 const createScrutiny = {};
 
+const createScrutinyWithoutAuth = {
+  body: Joi.object().keys({
+    numberOfConstituency: Joi.number().required(),
+    numberOfPollingStation: Joi.number().required(),
+  }),
+};
+
 const getScrutinys = {
   query: Joi.object().keys({
     pollingAgents: Joi.number().integer(),
@@ -57,4 +64,5 @@ module.exports = {
   createScrutiny,
   getAbstrctReport,
   isScrutinySubmitActive,
+  createScrutinyWithoutAuth,
 };

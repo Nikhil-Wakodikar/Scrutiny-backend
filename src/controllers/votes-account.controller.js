@@ -17,13 +17,13 @@ const createVotesAccount = catchAsync(async (req, res) => {
 });
 
 const createVotesAccountWithoutAuth = catchAsync(async (req, res) => {
-  let fileUrl = null;
-  if (req.file) {
-    fileUrl = "assets/votes-account/" + req.file.filename;
+  if (!req.file) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "file is required");
   }
+
   const votesAccount = await votesAccountService.createVotesAccount({
     ...req.body,
-    fileUrl,
+    fileUrl: "assets/votes-account/" + req.file.filename,
   });
   res.status(httpStatus.CREATED).send();
 });

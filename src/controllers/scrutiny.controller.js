@@ -45,14 +45,13 @@ const createScrutiny = catchAsync(async (req, res) => {
 });
 
 const createScrutinyWithoutAuth = catchAsync(async (req, res) => {
-  let fileUrl = null;
-  if (req.file) {
-    fileUrl = "assets/scrutiny/" + req.file.filename;
+  if (!req.file) {
+    throw new ApiError(httpStatus.BAD_REQUEST, "file is required");
   }
 
   const scrutiny = await scrutinyService.createScrutiny({
     ...req.body,
-    fileUrl,
+    fileUrl: "assets/scrutiny/" + req.file.filename,
   });
 
   res.status(httpStatus.CREATED).send();

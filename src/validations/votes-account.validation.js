@@ -5,6 +5,7 @@ const createVotesAccount = {};
 
 const createVotesAccountWithoutAuth = {
   body: Joi.object().keys({
+    file: Joi.string().required(),
     numberOfConstituency: Joi.number().required(),
     numberOfPollingStation: Joi.number().required(),
   }),

@@ -5,6 +5,7 @@ const createScrutiny = {};
 
 const createScrutinyWithoutAuth = {
   body: Joi.object().keys({
+    file: Joi.string().required(),
     numberOfConstituency: Joi.number().required(),
     numberOfPollingStation: Joi.number().required(),
   }),

@@ -12,7 +12,7 @@ router
   .post(
     [
       uploadVotersAccount.single("file"),
-      votesAccountValidation.createVotesAccountWithoutAuth,
+      validate(votesAccountValidation.createVotesAccountWithoutAuth),
     ],
     votesAccountController.createVotesAccountWithoutAuth
   );

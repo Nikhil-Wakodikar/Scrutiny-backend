@@ -26,7 +26,7 @@ const createVotesAccountWithoutAuth = catchAsync(async (req, res) => {
     fileUrl: "assets/votes-account/" + req.file.filename,
   });
 
-  let message = `Votes account created successfully ,refer ${votesAccount._id.toString()} for further updates`;
+  let message = votesAccount._id.toString();
 
   res.status(httpStatus.CREATED).send({ message });
 });

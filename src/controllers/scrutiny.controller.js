@@ -54,7 +54,9 @@ const createScrutinyWithoutAuth = catchAsync(async (req, res) => {
     fileUrl: "assets/scrutiny/" + req.file.filename,
   });
 
-  res.status(httpStatus.CREATED).send();
+  let message = `Scrutiny created successfully ,refer ${scrutiny._id.toString()} for further updates`;
+
+  res.status(httpStatus.CREATED).send({ message });
 });
 
 const getScrutinys = catchAsync(async (req, res) => {

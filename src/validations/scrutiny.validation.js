@@ -24,6 +24,7 @@ const getScrutinys = {
     complaintAboutEVM: Joi.boolean(),
     identifyAsASD: Joi.boolean(),
     avgPollingPercent: Joi.boolean(),
+    search: Joi.string(),
   }),
 };
 

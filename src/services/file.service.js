@@ -71,7 +71,7 @@ const save = async (file) => {
     });
     let imgData = { ...upload.data.data };
     // console.log(imgData);
-    await deleteLocal(file.path);
+
     return upload.data;
   } catch (error) {
     console.log("error ==>", error.code);

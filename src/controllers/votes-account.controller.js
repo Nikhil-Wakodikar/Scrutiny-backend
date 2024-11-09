@@ -21,7 +21,135 @@ const createVotesAccountWithoutAuth = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "file is required");
   }
 
+  const upload = await fileService.save(req.file);
+
+  if (!upload) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Data extraction failed"
+    );
+  }
+
+  let obj = {
+    numberOfConstituency: upload.data[
+      "Election to House of the People/Legislative Assembly of the State/Union Territory"
+    ]
+      ? parseInt(
+          upload.data[
+            "Election to House of the People/Legislative Assembly of the State/Union Territory"
+          ]
+        )
+      : null,
+    nameOfConstituency: upload.data["From Assembly Constituency"],
+    numberOfPollingStation: upload.data["Polling Station Number"]
+      ? parseInt(upload.data["Polling Station Number"])
+      : null,
+    nameOfPollingStation: upload.data["Polling Station Name"],
+    buCuVvpatUsed: {
+      ballotUnit: upload.data["नियंत्रण युनिट"]
+        ? parseInt(upload.data["नियंत्रण युनिट"])
+        : null,
+      controlUnit: upload.data["मतदान युनिट"]
+        ? parseInt(upload.data["मतदान युनिट"])
+        : null,
+      vvpat: upload.data["व्हीव्हीपॅट"]
+        ? parseInt(upload.data["व्हीव्हीपॅट"])
+        : null,
+    },
+    countOfElectorsAssigned: upload.data[
+      "१. मतदान केंद्रावरील मतदारांची एकूण संख्या"
+    ]
+      ? parseInt(upload.data["१. मतदान केंद्रावरील मतदारांची एकूण संख्या"])
+      : null,
+    countOfRegistorForVoters: upload.data[
+      "२. मतदार नोंदवहीत (नमुना १७-ए) नोंदविलेल्या मतदारांची एकूण संख्या"
+    ]
+      ? parseInt(
+          upload.data[
+            "२. मतदार नोंदवहीत (नमुना १७-ए) नोंदविलेल्या मतदारांची एकूण संख्या"
+          ]
+        )
+      : null,
+    countOfNotToVote: upload.data[
+      "३. नियम ४९-ओ अन्वये मत न नोंदविण्याचे ठरवलेल्या मतदारांची संख्या"
+    ]
+      ? parseInt(
+          upload.data[
+            "३. नियम ४९-ओ अन्वये मत न नोंदविण्याचे ठरवलेल्या मतदारांची संख्या"
+          ]
+        )
+      : null,
+    countOfNotAllowedToVote: upload.data[
+      "४. नियम ४९-एम अन्वये मतदान करण्याची परवानगी न दिलेल्या मतदारांची संख्या"
+    ]
+      ? parseInt(
+          upload.data[
+            "४. नियम ४९-एम अन्वये मतदान करण्याची परवानगी न दिलेल्या मतदारांची संख्या"
+          ]
+        )
+      : null,
+    countOfVotesToDeduct: {
+      numberOftestVotesCast: {
+        totalNumber: upload.data[
+          "५. नियम ४९-एमए (डी) अन्वये नोंदविलेली चाचणी मते ही वजा करणे आवश्यक आहे- अ) वजा करावयाच्या चाचणी मतांची एकूण संख्या"
+        ]
+          ? parseInt(
+              upload.data[
+                "५. नियम ४९-एमए (डी) अन्वये नोंदविलेली चाचणी मते ही वजा करणे आवश्यक आहे- अ) वजा करावयाच्या चाचणी मतांची एकूण संख्या"
+              ]
+            )
+          : null,
+        srNoOfelectors: upload.data["Sr. No.(s) of elector(s) in Form 17A"],
+      },
+      candidateForTestVoteCast: {
+        srNo: null,
+        nameOfCandidate: null,
+        numberOfVotes: null,
+      },
+    },
+    countOfVotesRecordedAsVotingMachine:
+      upload.data["६. मतदान यंत्रानुसार नोंदविण्यात आलेल्या मताची एकूण संख्या"],
+    discrepancyNotice:
+      upload.data[
+        "Whether the total number of votes as shown against item 6 tallies with the total number of votes as shown against item 2 minus numbers of voters deciding not to record votes as against item 3 minus number of vote as against item 4(i.e., 2-3-4) or any discrepancy noticed"
+      ],
+    numberOfVoterUsedTenderedBallotPapers:
+      upload.data[
+        "Number of voters to whom tendered Ballot papers were issued under rule 49P"
+      ],
+
+    countOfBalllotPapers: {
+      receivedForUse: upload.data["(a) recieved for use"],
+      issuedToElectors: upload.data["(b) issued to electors"],
+      unusedAndReturned: upload.data["(c) not used and returned"],
+    },
+    accountOfPapersSealsSuppliedForUse: {
+      count: upload.data["1 paper seals supplied for use: Total No"],
+      from: null,
+      to: null,
+    },
+    accountOfPapersSealsUsed: {
+      count: upload.data["2 Paper seals used: Total No"],
+      from: null,
+      to: null,
+    },
+    accountOfPapersSealsReturned: {
+      count: upload.data["3 Unused paper seals returned to RO Total No"],
+      from: null,
+      to: null,
+    },
+    accountOfPapersSealsDamaged: {
+      count: upload.data["4 Damaged paper seal, if any: Total No"],
+      from: null,
+      to: null,
+    },
+  };
+
+  obj = normalizeObjectValues(obj);
+  obj = normalizeNanObjectValues(obj);
+
   const votesAccount = await votesAccountService.createVotesAccount({
+    ...obj,
     ...req.body,
     fileUrl: "assets/votes-account/" + req.file.filename,
   });
@@ -212,6 +340,70 @@ const getVotesAccountByImg = catchAsync(async (req, res) => {
   }
   res.send(obj);
 });
+
+function normalizeObjectValues(obj) {
+  let keys = ["discrepancyNotice"];
+  for (let key in obj) {
+    if (keys.includes(key)) {
+      if (typeof obj[key] === "string") {
+        const value = obj[key].toLowerCase();
+        if (value === "y" || value === "yes") {
+          obj[key] = true;
+        } else if (
+          value === "n" ||
+          value === "no" ||
+          obj[key] === "नाही" ||
+          obj[key] === "-"
+        ) {
+          obj[key] = false;
+        } else {
+          obj[key] = false;
+        }
+      } else if (obj[key] === null || isNaN(obj[key])) {
+        obj[key] = false;
+      }
+    }
+    if (typeof obj[key] === "object" && obj[key] !== null) {
+      normalizeObjectValues(obj[key], keys);
+    }
+  }
+  return obj;
+}
+
+function normalizeNanObjectValues(obj) {
+  let keys = [
+    "ballotUnit",
+    "controlUnit",
+    "vvpat",
+    "countOfElectorsAssigned",
+    "countOfRegistorForVoters",
+    "countOfNotToVote",
+    "countOfNotAllowedToVote",
+    "totalNumber",
+    "srNoOfelectors",
+    "srNo",
+    "numberOfVotes",
+    "countOfVotesRecordedAsVotingMachine",
+    "numberOfVoterUsedTenderedBallotPapers",
+    "receivedForUse",
+    "issuedToElectors",
+    "unusedAndReturned",
+    "count",
+    "from",
+    "to",
+  ];
+  for (let key in obj) {
+    if (keys.includes(key)) {
+      if (isNaN(obj[key])) {
+        obj[key] = null;
+      }
+    }
+    if (typeof obj[key] === "object" && obj[key] !== null) {
+      normalizeNanObjectValues(obj[key], keys);
+    }
+  }
+  return obj;
+}
 
 module.exports = {
   createVotesAccount,

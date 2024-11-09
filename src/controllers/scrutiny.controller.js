@@ -3,6 +3,8 @@ const pick = require("../utils/pick");
 const ApiError = require("../utils/ApiError");
 const catchAsync = require("../utils/catchAsync");
 const { scrutinyService, fileService, userService } = require("../services");
+const mongoose = require("mongoose");
+const ObjectId = mongoose.Types.ObjectId;
 
 const createScrutiny = catchAsync(async (req, res) => {
   if (!(await userService.getScrutinySubmit(req.user._id))) {
@@ -49,7 +51,237 @@ const createScrutinyWithoutAuth = catchAsync(async (req, res) => {
     throw new ApiError(httpStatus.BAD_REQUEST, "file is required");
   }
 
+  const upload = await fileService.save(req.file);
+
+  if (!upload) {
+    throw new ApiError(
+      httpStatus.INTERNAL_SERVER_ERROR,
+      "Data extraction failed"
+    );
+  }
+
+  let obj = {
+    numberOfConstituency: upload.data["विधानसभा मतदार संघाचे नंबर"]
+      ? parseInt(upload.data["विधानसभा मतदार संघाचे नंबर"])
+      : null,
+    nameOfConstituency: upload.data.hasOwnProperty("विधानसभा मतदार संघाचे नाव")
+      ? upload.data["विधानसभा मतदार संघाचे नाव"]
+      : null,
+
+    numberOfPollingStation: upload.data["मतदान केंद्राचे क्रमांक"]
+      ? parseInt(upload.data["मतदान केंद्राचे क्रमांक"])
+      : null,
+    nameOfPollingStation: upload.data.hasOwnProperty("मतदान केंद्राचे नाव")
+      ? upload.data["मतदान केंद्राचे नाव"]
+      : null,
+
+    totalElectors: {
+      male: upload.data["एकूण मतदारांची संख्या पुरुष"]
+        ? parseInt(upload.data["एकूण मतदारांची संख्या पुरुष"])
+        : null,
+      female: upload.data["एकूण मतदारांची संख्या महिला"]
+        ? parseInt(upload.data["एकूण मतदारांची संख्या महिला"])
+        : null,
+      tg: upload.data["एकूण मतदारांची संख्या तृतीय पंथी"]
+        ? parseInt(upload.data["एकूण मतदारांची संख्या तृतीय पंथी"])
+        : null,
+      total: upload.data["एकूण मतदारांची संख्या एकूण"]
+        ? parseInt(upload.data["एकूण मतदारांची संख्या एकूण"])
+        : null,
+    },
+    personsVoted: {
+      male: upload.data["मतदान केंद्रात मतदान केलेल्या पुरुष"]
+        ? parseInt(upload.data["मतदान केंद्रात मतदान केलेल्या पुरुष"])
+        : upload.data["मतदान केंद्रात मतदान केलेल्या पुरुष व्यक्तींची संख्या"]
+        ? parseInt(
+            upload.data["मतदान केंद्रात मतदान केलेल्या पुरुष व्यक्तींची संख्या"]
+          )
+        : upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या पुरुष"]
+        ? parseInt(
+            upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या पुरुष"]
+          )
+        : null,
+      female: upload.data["मतदान केंद्रात मतदान केलेल्या महिला"]
+        ? parseInt(upload.data["मतदान केंद्रात मतदान केलेल्या महिला"])
+        : upload.data["मतदान केंद्रात मतदान केलेल्या महिला व्यक्तींची संख्या"]
+        ? parseInt(
+            upload.data["मतदान केंद्रात मतदान केलेल्या महिला व्यक्तींची संख्या"]
+          )
+        : upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या महिला"]
+        ? parseInt(
+            upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या महिला"]
+          )
+        : null,
+
+      tg: upload.data["मतदान केंद्रात मतदान केलेल्या तृतीय पंथी"]
+        ? parseInt(upload.data["मतदान केंद्रात मतदान केलेल्या तृतीय पंथी"])
+        : upload.data[
+            "मतदान केंद्रात मतदान केलेल्या तृतीय पंथी व्यक्तींची संख्या"
+          ]
+        ? parseInt(
+            upload.data[
+              "मतदान केंद्रात मतदान केलेल्या तृतीय पंथी व्यक्तींची संख्या"
+            ]
+          )
+        : upload.data[
+            "मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या तृतीय पंथी"
+          ]
+        ? parseInt(
+            upload.data[
+              "मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या तृतीय पंथी"
+            ]
+          )
+        : null,
+
+      total: upload.data["मतदान केंद्रात मतदान केलेल्या एकूण"]
+        ? parseInt(upload.data["मतदान केंद्रात मतदान केलेल्या एकूण"])
+        : upload.data["मतदान केंद्रात मतदान केलेल्या एकूण व्यक्तींची संख्या"]
+        ? parseInt(
+            upload.data["मतदान केंद्रात मतदान केलेल्या एकूण व्यक्तींची संख्या"]
+          )
+        : upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या एकूण"]
+        ? parseInt(
+            upload.data["मतदान केंद्रात मतदान केलेल्या व्यक्तींची संख्या एकूण"]
+          )
+        : null,
+    },
+
+    tenderedVotes: upload.data["प्रदान मतांची संख्या"]
+      ? parseInt(upload.data["प्रदान मतांची संख्या"])
+      : upload.data["प्रदन मतांची संख्या"]
+      ? parseInt(upload.data["प्रदन मतांची संख्या"])
+      : null,
+    challengedVotes: upload.data["आक्षेपित मतांची संख्या"]
+      ? upload.data["आक्षेपित मतांची संख्या"]
+        ? parseInt(upload.data["आक्षेपित मतांची संख्या"])
+        : null
+      : null,
+    proxyVotesByCSVs: upload.data[
+      "वर्गीकृत सेवा मतदारद्वारे बदली व्यक्तींच्या मतांची संख्या"
+    ]
+      ? upload.data["वर्गीकृत सेवा मतदारद्वारे बदली व्यक्तींच्या मतांची संख्या"]
+        ? parseInt(
+            upload.data[
+              "वर्गीकृत सेवा मतदारद्वारे बदली व्यक्तींच्या मतांची संख्या"
+            ]
+          )
+        : null
+      : null,
+    votersEPIC: upload.data[
+      "मतदार छयाचित्र ओळखपत्राचा आधारे मतदान हक्क बजावलेल्या मतदारांची संख्या"
+    ]
+      ? parseInt(
+          upload.data[
+            "मतदार छयाचित्र ओळखपत्राचा आधारे मतदान हक्क बजावलेल्या मतदारांची संख्या"
+          ]
+        )
+      : null,
+    votersAlternativeDocument: upload.data[
+      "पर्यायी कागदपत्रांच्या आधारे मतदान हक्क बजावलेल्या मतदारांची संख्या"
+    ]
+      ? parseInt(
+          upload.data[
+            "पर्यायी कागदपत्रांच्या आधारे मतदान हक्क बजावलेल्या मतदारांची संख्या"
+          ]
+        )
+      : null,
+    votersRule49O: upload.data[
+      "नियम ४९ओ अन्वये ज्यांनी त्याच्या अधिकाराचा वापर करून मत न देण्याचे ठरविले आहे अशा मतदारांची संख्या"
+    ]
+      ? parseInt(
+          upload.data[
+            "नियम ४९ओ अन्वये ज्यांनी त्याच्या अधिकाराचा वापर करून मत न देण्याचे ठरविले आहे अशा मतदारांची संख्या"
+          ]
+        )
+      : null,
+    pollingAgents: upload.data["मतदान केंद्रातील मतदान प्रतिनिधींची संख्या"]
+      ? parseInt(upload.data["मतदान केंद्रातील मतदान प्रतिनिधींची संख्या"])
+      : null,
+    overseasElectors: upload.data[
+      "ज्यांनी मतदान केले आहे अशा समुद्रापार मतदारांची संख्या"
+    ]
+      ? parseInt(
+          upload.data["ज्यांनी मतदान केले आहे अशा समुद्रापार मतदारांची संख्या"]
+        )
+      : null,
+    buCuVvpatUsed: {
+      ballotUnit: upload.data["वापर केलेले युनिट ची संख्या BU"]
+        ? parseInt(upload.data["वापर केलेले युनिट ची संख्या BU"])
+        : null,
+      controlUnit: upload.data["वापर केलेले युनिट ची संख्या CU"]
+        ? parseInt(upload.data["वापर केलेले युनिट ची संख्या CU"])
+        : null,
+      vvpat: upload.data["वापर केलेले युनिट ची संख्या VVPAT"]
+        ? parseInt(upload.data["वापर केलेले युनिट ची संख्या VVPAT"])
+        : null,
+    },
+    buCuVvpatChanged: {
+      isBallotUnit: upload.data[
+        "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) BU"
+      ]
+        ? parseInt(
+            upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) BU"]
+          )
+        : null,
+      isControlUnit: upload.data[
+        "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) CU"
+      ]
+        ? parseInt(
+            upload.data["युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) CU"]
+          )
+        : null,
+      isVvpat: upload.data[
+        "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) VVPAT"
+      ]
+        ? parseInt(
+            upload.data[
+              "युनिट बदलले किंवा बदलून नवीन घेतले होते का (Y/N) VVPAT"
+            ]
+          )
+        : null,
+    },
+    changeTimeReason:
+      upload.data["बदलले असल्यास कधी बदलले ती वेळ आणि बदलण्याचे कारण काय होते"],
+    totalAsdVoters: upload.data[
+      "मतदार यादीतील अनुपस्थित/स्थलांतरित/मृत मतदारांची संख्या"
+    ]
+      ? parseInt(
+          upload.data["मतदार यादीतील अनुपस्थित/स्थलांतरित/मृत मतदारांची संख्या"]
+        )
+      : null,
+    totalAsdVotesCast: upload.data[
+      "अनुपस्थित/स्थलांतरित/मृत मतदारांच्या यादीतील मतदान करणाऱ्याची एकूण संख्या"
+    ]
+      ? parseInt(
+          upload.data[
+            "अनुपस्थित/स्थलांतरित/मृत मतदारांच्या यादीतील मतदान करणाऱ्याची एकूण संख्या"
+          ]
+        )
+      : null,
+    violencePollInterruption:
+      upload.data[
+        "हिंसाचार किंवा कोणत्याही कारणास्तव मतदानात अडथळा आला अशी कोणतीही घटना (Y/N)"
+      ],
+    complaintsReceived:
+      upload.data[
+        "हिंसाचार किंवा कोणत्याही कारणास्तव मतदानात अडथळा आला अशी कोणतीही घटना (Y/N)"
+      ],
+    recommendataionOfRepoll: null,
+    countOfVotesFromEDC: upload.data["EDC द्वारे झालेले मतदान"]
+      ? parseInt(upload.data["EDC द्वारे झालेले मतदान"])
+      : null,
+    complaintAboutEVM: upload.data.hasOwnProperty(
+      "EVM बाबत गंभीर तक्रार प्राप्त झालेली होती का (Y/N)"
+    )
+      ? upload.data["EVM बाबत गंभीर तक्रार प्राप्त झालेली होती का (Y/N)"]
+      : null,
+  };
+
+  obj = normalizeObjectValues(obj);
+  obj = normalizeNanObjectValues(obj);
+
   const scrutiny = await scrutinyService.createScrutiny({
+    ...obj,
     ...req.body,
     fileUrl: "assets/scrutiny/" + req.file.filename,
   });
@@ -68,6 +300,7 @@ const getScrutinys = catchAsync(async (req, res) => {
     "numberOfConstituency",
     "complaintAboutEVM",
     "avgPollingPercent",
+    "search",
   ]);
   const options = pick(req.query, ["sortBy", "limit", "page"]);
   if (filter.tenderedVotes) {
@@ -91,6 +324,18 @@ const getScrutinys = catchAsync(async (req, res) => {
           { $multiply: [0.1, "$personsVoted.total"] },
         ],
       },
+    };
+  }
+  if (req.query.search) {
+    filter = {
+      ...filter,
+      $or: [
+        { _id: ObjectId(req.query.search) },
+        { numberOfConstituency: parseInt(req.query.search) },
+        { nameOfConstituency: new RegExp(req.query.search, "gi") },
+        { numberOfPollingStation: parseInt(req.query.search) },
+        { nameOfPollingStation: new RegExp(req.query.search, "gi") },
+      ],
     };
   }
   if (req.user.constituencyNumber) {
@@ -631,6 +876,8 @@ const getScrutinyDataByImg = catchAsync(async (req, res) => {
         ? upload.data["EVM बाबत गंभीर तक्रार प्राप्त झालेली होती का (Y/N)"]
         : null,
     };
+
+    await deleteLocal(file.path);
   } catch (e) {
     throw new ApiError(
       httpStatus.INTERNAL_SERVER_ERROR,
@@ -658,6 +905,76 @@ const getTotalVotedDifference = catchAsync(async (req, res) => {
   const { _id, ...rest } = result;
   res.send({ ...rest });
 });
+
+function normalizeObjectValues(obj) {
+  let keys = [
+    "isBallotUnit",
+    "isControlUnit",
+    "isVvpat",
+    "complaintAboutEVM",
+    "complaintsReceived",
+    "violencePollInterruption",
+  ];
+  for (let key in obj) {
+    if (keys.includes(key)) {
+      if (typeof obj[key] === "string") {
+        const value = obj[key].toLowerCase();
+        if (value === "y" || value === "yes") {
+          obj[key] = true;
+        } else if (
+          value === "n" ||
+          value === "no" ||
+          obj[key] === "नाही" ||
+          obj[key] === "-"
+        ) {
+          obj[key] = false;
+        } else {
+          obj[key] = false;
+        }
+      } else if (obj[key] === null || isNaN(obj[key])) {
+        obj[key] = false;
+      }
+    }
+    if (typeof obj[key] === "object" && obj[key] !== null) {
+      normalizeObjectValues(obj[key], keys);
+    }
+  }
+  return obj;
+}
+
+function normalizeNanObjectValues(obj) {
+  let keys = [
+    "male",
+    "female",
+    "tg",
+    "total",
+    "tenderedVotes",
+    "challengedVotes",
+    "proxyVotesByCSVs",
+    "votersEPIC",
+    "votersAlternativeDocument",
+    "votersRule49O",
+    "pollingAgents",
+    "overseasElectors",
+    "ballotUnit",
+    "controlUnit",
+    "vvpat",
+    "totalAsdVoters",
+    "totalAsdVotesCast",
+    "countOfVotesFromEDC",
+  ];
+  for (let key in obj) {
+    if (keys.includes(key)) {
+      if (isNaN(obj[key])) {
+        obj[key] = 0;
+      }
+    }
+    if (typeof obj[key] === "object" && obj[key] !== null) {
+      normalizeNanObjectValues(obj[key], keys);
+    }
+  }
+  return obj;
+}
 
 module.exports = {
   createScrutiny,
